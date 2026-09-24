@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LulaGazette | South African Legal Information</title>
+  <meta name="description" content="LulaGazette — South African Acts, cases, court forms, regulations and plain-language guides for individuals and lawyers." />
+  <meta name="author" content="Lulamile Mkhungela" />
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml" />
+  <style>
+    @font-face {
+      font-family: "Figtree";
+      src: url("public/fonts/Figtree-Light.woff2") format("woff2");
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: "Figtree";
+      src: url("public/fonts/Figtree-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: "Figtree";
+      src: url("public/fonts/Figtree-Medium.woff2") format("woff2");
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: "Figtree";
+      src: url("public/fonts/Figtree-Bold.woff2") format("woff2");
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: "Playfair Display";
+      src: url("public/fonts/PlayfairDisplay.ttf") format("truetype");
+      font-weight: 400 800; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      --blue: #0C68BE;
+      --blue-bright: #0F80EB;
+      --navy: #0B151F;
+      --ink: #112130;
+      --slate: #1D2E40;
+      --muted: #5E7B99;
+      --soft: #677480;
+      --line: #E5EEF5;
+      --wash: #F5F8FB;
+      --green: #298D62;
+      --cyan: #49A9C9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- Header ---------- */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .header-in {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; padding: 14px 0;
+    }
+    .brand img { height: 32px; width: auto; }
+    nav.main-nav { display: flex; align-items: center; gap: 4px; }
+    nav.main-nav a {
+      padding: 8px 12px; border-radius: 8px;
+      font-size: 14px; font-weight: 500; color: var(--slate);
+      transition: background 0.15s, color 0.15s;
+    }
+    nav.main-nav a:hover { background: var(--wash); color: var(--navy); }
+    .gh-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 16px; border-radius: 10px;
+      background: var(--blue); color: #fff;
+      font-size: 14px; font-weight: 600;
+      box-shadow: 0 4px 24px rgba(12, 104, 190, 0.25);
+      transition: background 0.15s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .gh-btn:hover { background: var(--blue-bright); transform: translateY(-1px); }
+    .gh-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      background: url("public/images/landing_bg.png") center / cover no-repeat;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.6) 55%, #ffffff 100%);
+    }
+    .hero-in {
+      position: relative;
+      max-width: 900px; margin: 0 auto;
+      padding: 88px 24px 56px;
+      text-align: center;
+    }
+    .kicker {
+      display: inline-block;
+      padding: 6px 14px; border-radius: 999px;
+      background: rgba(12, 104, 190, 0.1);
+      color: var(--blue);
+      font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin-top: 18px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(2.1rem, 5vw, 3.4rem);
+      line-height: 1.15;
+      color: var(--navy);
+    }
+    .hero .sub {
+      margin-top: 10px;
+      font-size: clamp(1rem, 2.2vw, 1.25rem);
+      color: var(--soft);
+    }
+    .hero .sub strong { color: var(--slate); font-weight: 600; }
+
+    /* ---------- Search (decorative) ---------- */
+    .search-demo {
+      margin: 32px auto 0;
+      max-width: 640px;
+      display: flex; align-items: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 6px 6px 6px 18px;
+      box-shadow: 0 10px 40px rgba(11, 21, 31, 0.08);
+    }
+    .search-demo input {
+      flex: 1; min-width: 0; border: 0; outline: 0;
+      font: inherit; font-size: 15px; color: var(--ink);
+      background: transparent;
+    }
+    .search-demo input::placeholder { color: #86929E; }
+    .search-demo button {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      width: 42px; height: 42px;
+      border: 0; border-radius: 10px;
+      background: var(--blue); cursor: pointer;
+      transition: background 0.15s;
+    }
+    .search-demo button:hover { background: var(--blue-bright); }
+    .search-demo button img { width: 16px; height: 16px; filter: invert(1); }
+
+    /* ---------- Categories ---------- */
+    .cats {
+      position: relative;
+      margin: 44px auto 0;
+      max-width: 960px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+    .cat {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      padding: 20px 10px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 1px 2px rgba(11, 21, 31, 0.05);
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    }
+    .cat:hover {
+      transform: translateY(-2px);
+      border-color: rgba(12, 104, 190, 0.4);
+      box-shadow: 0 8px 24px rgba(11, 21, 31, 0.08);
+    }
+    .cat-ico {
+      display: flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; border-radius: 14px;
+    }
+    .cat-ico img { width: 28px; height: 28px; }
+    .cat span.lbl {
+      font-size: 13.5px; font-weight: 600; color: var(--navy); text-align: center;
+    }
+    .cat:hover span.lbl { color: var(--blue); }
+
+    /* ---------- Sections ---------- */
+    section.block { border-top: 1px solid var(--line); }
+    .block-in { max-width: 1120px; margin: 0 auto; padding: 56px 24px; }
+    .block h2 {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--navy);
+      text-align: center;
+    }
+    .block .lead {
+      margin: 10px auto 0; max-width: 620px;
+      text-align: center; color: var(--soft); font-size: 15.5px;
+    }
+
+    .cards-3 {
+      margin-top: 34px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    }
+    .card {
+      padding: 22px;
+      background: #FAFDFF;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      transition: background 0.15s, box-shadow 0.15s, border-color 0.15s;
+    }
+    .card:hover { background: #fff; border-color: rgba(12, 104, 190, 0.3); box-shadow: 0 4px 16px rgba(11,21,31,0.06); }
+    .card h3 { font-size: 16px; font-weight: 600; color: var(--navy); }
+    .card p { margin-top: 6px; font-size: 14px; line-height: 1.6; color: var(--soft); }
+
+    .features {
+      margin-top: 34px;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+    }
+    .feature {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 20px 22px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+    .feature .dot {
+      flex-shrink: 0;
+      width: 10px; height: 10px; margin-top: 7px;
+      border-radius: 999px; background: var(--blue);
+    }
+    .feature h3 { font-size: 15px; font-weight: 600; color: var(--navy); }
+    .feature p { margin-top: 4px; font-size: 14px; line-height: 1.6; color: var(--soft); }
+
+    /* ---------- Run locally ---------- */
+    .run {
+      margin-top: 34px;
+      background: var(--navy);
+      border-radius: 18px;
+      padding: 30px 32px;
+      color: #DCE7F2;
+      display: flex; flex-wrap: wrap; gap: 24px;
+      align-items: center; justify-content: space-between;
+    }
+    .run h3 { font-size: 17px; font-weight: 600; color: #fff; }
+    .run p { margin-top: 6px; font-size: 14px; color: #9FB4C8; max-width: 520px; }
+    .run code {
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 13px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 2px 7px; border-radius: 6px;
+      color: #BCD7F5;
+    }
+    .run .gh-btn { background: #fff; color: var(--navy); box-shadow: none; }
+    .run .gh-btn:hover { background: #EAF2FB; }
+
+    /* ---------- Footer ---------- */
+    footer { background: rgba(17, 33, 48, 0.97); color: #fff; }
+    .foot-in { max-width: 1200px; margin: 0 auto; padding: 48px 24px 28px; }
+    .foot-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between; }
+    .foot-brand { max-width: 300px; }
+    .foot-brand img { height: 28px; width: auto; filter: brightness(0) invert(1); }
+    .foot-brand p { margin-top: 14px; font-size: 13.5px; line-height: 1.65; color: #86929E; }
+    .socials { display: flex; gap: 10px; margin-top: 18px; }
+    .socials a {
+      display: flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 9px;
+      background: rgba(255,255,255,0.07);
+      transition: background 0.15s;
+    }
+    .socials a:hover { background: rgba(255,255,255,0.16); }
+    .socials img { width: 15px; height: 15px; filter: invert(1); opacity: 0.9; }
+    .foot-cols { display: flex; flex-wrap: wrap; gap: 48px; }
+    .foot-col h4 { font-size: 13px; font-weight: 500; color: #86929E; margin-bottom: 12px; }
+    .foot-col ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .foot-col a { font-size: 13.5px; color: rgba(255,255,255,0.9); }
+    .foot-col a:hover { color: #fff; text-decoration: underline; }
+    .foot-legal {
+      margin-top: 40px; padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex; flex-wrap: wrap; gap: 12px;
+      justify-content: space-between;
+      font-size: 12.5px; color: #86929E;
+    }
+    .foot-legal .disclaimer { max-width: 720px; line-height: 1.6; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px) {
+      .cats { grid-template-columns: repeat(3, 1fr); }
+      nav.main-nav { display: none; }
+    }
+    @media (max-width: 720px) {
+      .cards-3, .features { grid-template-columns: 1fr; }
+      .block-in { padding: 44px 20px; }
+    }
+    @media (max-width: 480px) {
+      .cats { grid-template-columns: repeat(2, 1fr); }
+      .hero-in { padding: 64px 18px 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap header-in">
+      <a class="brand" href="index.html" aria-label="LulaGazette home">
+        <img src="public/images/logo.svg" alt="LulaGazette" />
+      </a>
+      <nav class="main-nav" aria-label="Main">
+        <a href="#categories">Library</a>
+        <a href="#next-steps">I need help</a>
+        <a href="#features">Features</a>
+        <a href="#run">Run the app</a>
+      </nav>
+      <a class="gh-btn" href="https://github.com/LulamileMkhungela/LulaGazette" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        View on GitHub
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-in">
+        <span class="kicker">South African legal information</span>
+        <h1>Smart legal intelligence</h1>
+        <p class="sub">Acts, cases, court forms, rules and plain-language guides — <strong>for individuals and lawyers</strong>. What would you like to explore today?</p>
+
+        <form class="search-demo" action="#categories" method="get">
+          <input type="text" placeholder="Search for a document or ask a question" aria-label="Search" />
+          <button type="submit" aria-label="Search">
+            <img src="public/icons/search.svg" alt="" />
+          </button>
+        </form>
+
+        <div class="cats" id="categories">
+          <a class="cat" href="#library">
+            <span class="cat-ico" style="background:#0C68BE18"><img src="public/icons/law.svg" alt="" /></span>
+            <span class="lbl">Acts</span>
+          </a>
+          <a class="cat" href="#library">
+            <span class="cat-ico" style="background:#298D6218"><img src="public/icons/cases.svg" alt="" /></span>
+            <span class="lbl">Cases</span>
+          </a>
+          <a class="cat" href="#library">
+            <span class="cat-ico" style="background:#49A9C918"><img src="public/icons/institution.svg" alt="" /></span>
+            <span class="lbl">Court Forms</span>
+          </a>
+          <a class="cat" href="#library">
+            <span class="cat-ico" style="background:#0F80EB18"><img src="public/icons/reg.svg" alt="" /></span>
+            <span class="lbl">Court Rules</span>
+          </a>
+          <a class="cat" href="#library">
+            <span class="cat-ico" style="background:#5E7B9918"><img src="public/icons/reg.svg" alt="" /></span>
+            <span class="lbl">Regulations</span>
+          </a>
+          <a class="cat" href="#library">
+            <span class="cat-ico" style="background:#1E4D3918"><img src="public/icons/law.svg" alt="" /></span>
+            <span class="lbl">Provincial Laws</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next steps -->
+    <section class="block" id="next-steps">
+      <div class="block-in">
+        <h2>Where to start</h2>
+        <p class="lead">Everyday problems in plain language, the institutions that can help, and what the product is about.</p>
+        <div class="cards-3">
+          <div class="card">
+            <h3>I need help</h3>
+            <p>Fired, eviction, debt, consumer issues — step-by-step guides in plain language for work, housing, debt, consumer matters and POPIA.</p>
+          </div>
+          <div class="card">
+            <h3>Where do I go?</h3>
+            <p>A directory of courts, the CCMA, Legal Aid SA, regulators and professional bodies — so you reach the right door first.</p>
+          </div>
+          <div class="card">
+            <h3>System overview / integrate</h3>
+            <p>LulaGazette is a product-in-progress, not a law firm. Book a product walkthrough or integration chat via the repository.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="block" id="features" style="background:var(--wash)">
+      <div class="block-in" id="library">
+        <h2>What’s inside</h2>
+        <p class="lead">A clear first stop for South African legal material — educational information, kept separate from legal advice.</p>
+        <div class="features">
+          <div class="feature">
+            <span class="dot"></span>
+            <div>
+              <h3>Acts, cases &amp; regulations</h3>
+              <p>National legislation, judgments of the Constitutional Court, SCA and High Courts, regulations, notices and provincial laws across the nine provinces.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot" style="background:var(--green)"></span>
+            <div>
+              <h3>Document reader</h3>
+              <p>An in-app PDF reader with a details rail — author, year, pages and plain summaries — so documents are easier to work through.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot" style="background:var(--cyan)"></span>
+            <div>
+              <h3>Audience modes</h3>
+              <p>Switch between <strong>Individual</strong> and <strong>Lawyer</strong>: navigation, templates and the directory follow the audience you choose.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot" style="background:var(--blue-bright)"></span>
+            <div>
+              <h3>Guides &amp; templates</h3>
+              <p>Plain step-by-step guides and draft starters tagged for individuals and/or lawyers — always review before filing anything.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Run the app -->
+    <section class="block" id="run">
+      <div class="block-in">
+        <div class="run">
+          <div>
+            <h3>This page is the static front door — the full product is a Next.js app.</h3>
+            <p>Search, the PDF reader, audience modes and guides all live in this repository. Clone it, then run <code>npm install</code> and <code>npm run dev</code> — see <code>RUN_LOCAL.md</code> for details.</p>
+          </div>
+          <a class="gh-btn" href="https://github.com/LulamileMkhungela/LulaGazette" target="_blank" rel="noopener">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+            Star &amp; clone the repo
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot-in">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <img src="public/images/logo.svg" alt="LulaGazette" />
+          <p>South African legal information for people with everyday questions — Acts, forms, guides and where to go next. Built in Johannesburg by Lulamile Mkhungela.</p>
+          <div class="socials">
+            <a href="https://x.com" aria-label="X (Twitter)" target="_blank" rel="noopener"><img src="public/icons/x.svg" alt="" /></a>
+            <a href="https://linkedin.com" aria-label="LinkedIn" target="_blank" rel="noopener"><img src="public/icons/linkedin.svg" alt="" /></a>
+            <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener"><img src="public/icons/facebook.svg" alt="" /></a>
+          </div>
+        </div>
+        <div class="foot-cols">
+          <div class="foot-col">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#next-steps">I need help</a></li>
+              <li><a href="#features">Free trial</a></li>
+              <li><a href="#features">Pro features</a></li>
+            </ul>
+          </div>
+          <div class="foot-col">
+            <h4>Explore</h4>
+            <ul>
+              <li><a href="#categories">Acts</a></li>
+              <li><a href="#categories">Cases</a></li>
+              <li><a href="#categories">Court forms</a></li>
+              <li><a href="#categories">Regulations</a></li>
+            </ul>
+          </div>
+          <div class="foot-col">
+            <h4>Project</h4>
+            <ul>
+              <li><a href="https://github.com/LulamileMkhungela/LulaGazette" target="_blank" rel="noopener">Source code</a></li>
+              <li><a href="https://github.com/LulamileMkhungela/LulaGazette/blob/main/README.md" target="_blank" rel="noopener">README</a></li>
+              <li><a href="https://github.com/LulamileMkhungela/LulaGazette/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li>
+              <li><a href="https://github.com/LulamileMkhungela/LulaGazette/blob/main/LICENSE" target="_blank" rel="noopener">Licence</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="foot-legal">
+        <p class="disclaimer">
+          LulaGazette is <strong>not a law firm</strong> and the founder is <strong>not a lawyer</strong>.
+          Content is general legal information for education. For advice on a live matter, instruct an
+          admitted South African attorney or advocate.
+        </p>
+        <p>© <span id="year">2026</span> LulaGazette. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
