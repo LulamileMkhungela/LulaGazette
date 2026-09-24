@@ -6,8 +6,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LegalDocument } from "@/data/legal";
 import { categories } from "@/data/legal";
 import { pageCountFor } from "@/lib/search";
-import { useAuth } from "@/context/AuthContext";
-import { getCountryFlag } from "@/data/africanCountries";
 
 const PdfStage = dynamic(() => import("@/components/PdfStage").then((m) => m.PdfStage), {
   ssr: false,
@@ -27,7 +25,6 @@ const PdfStage = dynamic(() => import("@/components/PdfStage").then((m) => m.Pdf
  * → flex row: PDF stage (min-height 90vh, bordered) + details rail (~20vw)
  */
 export function DocumentViewer({ doc }: { doc: LegalDocument }) {
-  const { isDocSaved, toggleSaveDoc } = useAuth();
   const cat = categories.find((c) => c.id === doc.category);
   const pagesMeta = pageCountFor(doc.id, doc.body.length);
   const pdfUrl = `/pdfs/${doc.id}.pdf`;
@@ -35,26 +32,21 @@ export function DocumentViewer({ doc }: { doc: LegalDocument }) {
   const [detailsOpen, setDetailsOpen] = useState(true);
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [libOpen, setLibOpen] = useState(false);
+  const [inLibrary, setInLibrary] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [copiedText, setCopiedText] = useState(false);
   const [pageCount, setPageCount] = useState(pagesMeta);
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1);
-  const [viewFormat, setViewFormat] = useState<"pdf" | "text">("pdf");
-  const [textSearch, setTextSearch] = useState("");
-
   const libRef = useRef<HTMLDivElement>(null);
 
   const noteKey = `lg-notes-${doc.id}`;
   const [notes, setNotes] = useState("");
-  const [savedNote, setSavedNote] = useState(false);
-
-  const flag = doc.flag || getCountryFlag(doc.countryCode);
-  const countryName = doc.country || doc.jurisdiction || "South Africa";
-  const inLibrary = isDocSaved(doc.id);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     try {
+      const lib = JSON.parse(localStorage.getItem("lg-library") || "[]") as string[];
+      setInLibrary(lib.includes(doc.id));
       const n = localStorage.getItem(noteKey);
       if (n) setNotes(n);
     } catch {
@@ -74,333 +66,404 @@ export function DocumentViewer({ doc }: { doc: LegalDocument }) {
 
   const preview = useMemo(() => truncate(doc.summary || doc.body.replace(/\s+/g, " "), 220), [doc]);
 
-  function copyCitation() {
-    navigator.clipboard.writeText(`${doc.title} (${doc.citation})`);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
-
-  function copyFullText() {
-    navigator.clipboard.writeText(`${doc.title}\n${doc.citation}\n\n${doc.body}`);
-    setCopiedText(true);
-    setTimeout(() => setCopiedText(false), 2000);
-  }
-
-  function saveNotes() {
+  const toggleLibrary = useCallback(() => {
     try {
-      localStorage.setItem(noteKey, notes);
-      setSavedNote(true);
-      setTimeout(() => setSavedNote(false), 2000);
+      const lib = JSON.parse(localStorage.getItem("lg-library") || "[]") as string[];
+      let next: string[];
+      if (lib.includes(doc.id)) {
+        next = lib.filter((id) => id !== doc.id);
+        setInLibrary(false);
+      } else {
+        next = [doc.id, ...lib];
+        setInLibrary(true);
+      }
+      localStorage.setItem("lg-library", JSON.stringify(next));
+    } catch {
+      /* empty */
+    }
+    setLibOpen(false);
+  }, [doc.id]);
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
     } catch {
       /* empty */
     }
   }
 
-  const pagesLabel = useMemo(() => {
-    return `${pageCount} ${pageCount === 1 ? "page" : "pages"}`;
-  }, [pageCount]);
+  function saveNotes() {
+    try {
+      localStorage.setItem(noteKey, notes);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1500);
+    } catch {
+      /* empty */
+    }
+  }
+
+  const pagesLabel = `${pageCount} ${pageCount === 1 ? "page" : "pages"}`;
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-[1400px] px-4 py-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb row */}
-        <nav aria-label="Breadcrumb" className="mb-4 text-xs text-[#86929E]">
-          <ol className="flex flex-wrap items-center gap-1.5">
-            <li>
-              <Link href="/" className="hover:text-[#0C68BE]">
-                Home
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li>
-              <Link href={`/s?country=${doc.countryCode || "ZA"}`} className="hover:text-[#0C68BE]">
-                {flag} {countryName}
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li>
-              <Link href={`/s?c=${doc.category}`} className="hover:text-[#0C68BE]">
-                {cat?.label || doc.category}
-              </Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li className="max-w-[200px] truncate text-[#112130] sm:max-w-md" aria-current="page">
-              {doc.title}
-            </li>
-          </ol>
-        </nav>
+    <div className="overflow-x-clip bg-white">
+      <main className="flex flex-col bg-white py-7">
+        <div className="container mx-auto max-w-[1200px] px-4 lg:px-6">
+          {/* Breadcrumb — Lexark: Home / Search Result / title */}
+          <nav aria-label="Breadcrumb">
+            <ol className="flex flex-wrap items-center gap-2 text-sm">
+              <li>
+                <Link href="/">
+                  <span className="text-[#0F80EB] hover:underline">Home</span>
+                </Link>
+              </li>
+              <li className="text-[#86929E]" aria-hidden>
+                /
+              </li>
+              <li>
+                <Link href={`/s?c=${doc.category}&sort=year-desc&limit=20&page=1`}>
+                  <span className="text-[#0F80EB] hover:underline">Search Result</span>
+                </Link>
+              </li>
+              <li className="text-[#86929E]" aria-hidden>
+                /
+              </li>
+              <li className="min-w-0">
+                <span className="line-clamp-1 text-[#112130]">{doc.title}</span>
+              </li>
+            </ol>
+          </nav>
 
-        {/* Title row */}
-        <div className="mb-6 flex flex-col gap-4 border-b border-[#E5EEF5] pb-5 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span
-                className="rounded px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white"
-                style={{ backgroundColor: cat?.color ?? "#0C68BE" }}
-              >
-                {cat?.label ?? doc.category}
-              </span>
-              <span className="inline-flex items-center gap-1 rounded bg-[#F5F8FB] px-2.5 py-0.5 text-[11px] font-medium text-[#112130]">
-                <span>{flag}</span>
-                <span>{countryName}</span>
-              </span>
-              <span className="rounded bg-[#F5F8FB] px-2.5 py-0.5 text-[11px] font-medium text-[#677480]">
-                {doc.year}
-              </span>
-              <span className="rounded bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-[#298D62]">
-                {doc.status || "In force"}
-              </span>
-              <span className="text-xs text-[#86929E]">{pagesLabel}</span>
-            </div>
+          <div className="my-4 h-px w-full bg-[#E5EEF5]" role="separator" />
 
-            <h1 className="mt-2 font-display text-2xl font-semibold text-[#0B151F] sm:text-3xl">{doc.title}</h1>
-            <p className="mt-0.5 font-mono text-xs text-[#0C68BE]">{doc.citation}</p>
-          </div>
-
-          {/* Action buttons */}
-          <div className="flex flex-wrap items-center gap-2">
-            {/* View Format Switcher (PDF vs Official Gazette Text) */}
-            <div className="flex rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] p-0.5">
-              <button
-                type="button"
-                onClick={() => setViewFormat("pdf")}
-                className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
-                  viewFormat === "pdf" ? "bg-white text-[#0B151F] shadow-xs" : "text-[#677480] hover:text-[#0B151F]"
-                }`}
-              >
-                PDF View
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewFormat("text")}
-                className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition ${
-                  viewFormat === "text" ? "bg-white text-[#0B151F] shadow-xs" : "text-[#677480] hover:text-[#0B151F]"
-                }`}
-              >
-                Gazette Full Text
-              </button>
-            </div>
-
-            {/* Save to library */}
-            <button
-              type="button"
-              onClick={() => toggleSaveDoc(doc.id)}
-              className={`rounded-xl border px-3 py-1.5 text-xs font-semibold transition ${
-                inLibrary
-                  ? "border-amber-300 bg-amber-50 text-amber-900"
-                  : "border-[#E5EEF5] bg-white text-[#112130] hover:bg-[#F5F8FB]"
-              }`}
-            >
-              {inLibrary ? "★ Saved to Account" : "☆ Save to Account"}
-            </button>
-
-            {/* Copy citation */}
-            <button
-              type="button"
-              onClick={copyCitation}
-              className="rounded-xl border border-[#E5EEF5] bg-white px-3 py-1.5 text-xs font-medium text-[#112130] hover:bg-[#F5F8FB]"
-            >
-              {copied ? "✓ Copied" : "Copy citation"}
-            </button>
-
-            {/* Copy full text */}
-            <button
-              type="button"
-              onClick={copyFullText}
-              className="rounded-xl border border-[#E5EEF5] bg-white px-3 py-1.5 text-xs font-medium text-[#112130] hover:bg-[#F5F8FB]"
-            >
-              {copiedText ? "✓ Text Copied" : "Copy text"}
-            </button>
-
-            {/* Toggle Details Rail */}
-            <button
-              type="button"
-              onClick={() => setDetailsOpen((v) => !v)}
-              className="rounded-xl border border-[#E5EEF5] bg-white px-3 py-1.5 text-xs font-medium text-[#112130] hover:bg-[#F5F8FB]"
-            >
-              {detailsOpen ? "Hide panel" : "Show panel"}
-            </button>
-          </div>
-        </div>
-
-        {/* Reading Stage + Details Rail */}
-        <div className="flex flex-col gap-6 lg:flex-row">
-          {/* Main Stage */}
-          <div className="min-w-0 flex-1">
-            {viewFormat === "pdf" ? (
-              <div>
-                {/* PDF Toolbar */}
-                <div className="mb-2 flex flex-wrap items-center justify-between gap-2 rounded-t-xl border border-b-0 border-[#E5EEF5] bg-white px-4 py-2 text-xs">
-                  <div className="flex items-center gap-1.5">
-                    <span>Page {pageNumber} of {pageCount}</span>
-                    <button
-                      disabled={pageNumber <= 1}
-                      onClick={() => setPageNumber((p) => Math.max(1, p - 1))}
-                      className="rounded border border-[#E5EEF5] px-2 py-0.5 hover:bg-[#F5F8FB] disabled:opacity-40"
-                    >
-                      ‹
-                    </button>
-                    <button
-                      disabled={pageNumber >= pageCount}
-                      onClick={() => setPageNumber((p) => Math.min(pageCount, p + 1))}
-                      className="rounded border border-[#E5EEF5] px-2 py-0.5 hover:bg-[#F5F8FB] disabled:opacity-40"
-                    >
-                      ›
-                    </button>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setScale((s) => Math.max(0.6, +(s - 0.1).toFixed(2)))}
-                      className="rounded border border-[#E5EEF5] px-2 py-0.5 hover:bg-[#F5F8FB]"
-                    >
-                      −
-                    </button>
-                    <span className="tabular-nums">{Math.round(scale * 100)}%</span>
-                    <button
-                      onClick={() => setScale((s) => Math.min(1.8, +(s + 0.1).toFixed(2)))}
-                      className="rounded border border-[#E5EEF5] px-2 py-0.5 hover:bg-[#F5F8FB]"
-                    >
-                      +
-                    </button>
-                    <button
-                      onClick={() => setScale(1)}
-                      className="rounded border border-[#E5EEF5] px-2 py-0.5 hover:bg-[#F5F8FB]"
-                    >
-                      Reset
-                    </button>
-                    <a
-                      href={pdfUrl}
-                      download={`${doc.id}.pdf`}
-                      className="rounded bg-[#0C68BE] px-2.5 py-0.5 text-white hover:bg-[#0F80EB]"
-                    >
-                      Download PDF
-                    </a>
-                  </div>
-                </div>
-
-                {/* PDF Stage with graceful text fallback */}
-                <div className="relative min-h-[85vh] rounded-b-xl border border-[#E5EEF5] bg-[#FAFDFF] overflow-hidden">
-                  <PdfStage
-                    fileUrl={pdfUrl}
-                    pageNumber={pageNumber}
-                    scale={scale}
-                    onLoadSuccess={(n) => setPageCount(n || pagesMeta)}
-                    onPageChange={setPageNumber}
-                  />
-                </div>
+          {/* Title header + actions */}
+          <header className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 items-center gap-3">
+              <CategoryIcon color={cat?.color || "#0C68BE"} label={cat?.label || "Doc"} />
+              <div className="min-w-0">
+                <p className="text-sm text-gray-500">{shortAuthor(doc.source)}</p>
+                <p className="text-xl font-semibold text-[#0B151F]">{doc.title}</p>
               </div>
-            ) : (
-              /* Official Gazette Text View */
-              <div className="rounded-2xl border border-[#E5EEF5] bg-white p-6 sm:p-8">
-                {/* Text View Controls */}
-                <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-[#E5EEF5] pb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
-                      ✓ Official Gazette &amp; Statute Extract
-                    </span>
-                    <span className="text-xs text-[#86929E]">Verified Text Source</span>
+            </div>
+
+            <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+              {/* Library dropdown */}
+              <div className="relative" ref={libRef}>
+                <button
+                  type="button"
+                  onClick={() => setLibOpen((v) => !v)}
+                  className="inline-flex items-center gap-1 rounded-md border border-[#d9d9d9] bg-white px-2 py-1.5 text-sm text-[#112130] hover:border-[#0C68BE]/40 hover:text-[#0C68BE]"
+                  style={{ paddingLeft: 6, paddingRight: 6 }}
+                >
+                  <LibraryIcon />
+                  <span className="flex items-center gap-1">
+                    Library
+                    <ChevronDown />
+                  </span>
+                </button>
+                {libOpen && (
+                  <div className="absolute right-0 z-30 mt-1 w-52 overflow-hidden rounded-lg border border-[#E5EEF5] bg-white py-1 shadow-lg">
+                    <button
+                      type="button"
+                      onClick={toggleLibrary}
+                      className="block w-full px-3 py-2 text-left text-sm hover:bg-[#F5F8FB]"
+                    >
+                      {inLibrary ? "Remove from library" : "Add to library"}
+                    </button>
+                    <Link
+                      href="/lawyers"
+                      className="block w-full px-3 py-2 text-left text-sm hover:bg-[#F5F8FB]"
+                      onClick={() => setLibOpen(false)}
+                    >
+                      Open my library
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={copyLink}
+                className="inline-flex items-center gap-1 rounded-md border border-[#d9d9d9] bg-white px-2 py-1.5 text-sm text-[#112130] hover:border-[#0C68BE]/40"
+                style={{ paddingLeft: 6, paddingRight: 6 }}
+              >
+                <LinkIcon />
+                <span>{copied ? "Copied" : "Copy link"}</span>
+              </button>
+
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-1 rounded-md border border-[#d9d9d9] bg-white px-2 py-1.5 text-sm text-[#112130] hover:border-[#0C68BE]/40"
+                style={{ paddingLeft: 6, paddingRight: 6 }}
+                title="AI assistant is part of paid packages"
+              >
+                <ChatIcon />
+                <span>Ask Lula</span>
+              </Link>
+
+              <button
+                type="button"
+                aria-label={detailsOpen ? "Hide document details" : "Show document details"}
+                aria-expanded={detailsOpen}
+                aria-controls="lg-document-details"
+                onClick={() => setDetailsOpen((v) => !v)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[#d9d9d9] bg-white text-[#112130] hover:border-[#0C68BE]/40"
+              >
+                {detailsOpen ? <PanelCloseIcon /> : <PanelOpenIcon />}
+              </button>
+            </div>
+          </header>
+
+          {/* PDF stage + details — Lexark flex row gap-5 */}
+          <div
+            className={`flex flex-row transition-[gap] duration-300 ease-in-out motion-reduce:transition-none ${
+              detailsOpen ? "gap-5" : "gap-0"
+            }`}
+          >
+            <div className="min-w-0 flex-1">
+              <div className="flex border border-[#E5EEF5]">
+                <div className="flex min-w-0 flex-1 flex-col gap-4">
+                  {/* In-viewer chrome (page/zoom) sits above the canvas like a reader toolbar */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E5EEF5] bg-[#FAFDFF] px-3 py-2">
+                    <div className="flex items-center gap-1">
+                      <ToolBtn
+                        label="Previous page"
+                        disabled={pageNumber <= 1}
+                        onClick={() => setPageNumber((p) => Math.max(1, p - 1))}
+                      >
+                        ‹
+                      </ToolBtn>
+                      <span className="min-w-[5.5rem] text-center text-xs tabular-nums text-[#677480]">
+                        {pageNumber} / {pageCount}
+                      </span>
+                      <ToolBtn
+                        label="Next page"
+                        disabled={pageNumber >= pageCount}
+                        onClick={() => setPageNumber((p) => Math.min(pageCount, p + 1))}
+                      >
+                        ›
+                      </ToolBtn>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <ToolBtn label="Zoom out" onClick={() => setScale((s) => Math.max(0.6, +(s - 0.1).toFixed(2)))}>
+                        −
+                      </ToolBtn>
+                      <span className="min-w-[3rem] text-center text-xs tabular-nums text-[#677480]">
+                        {Math.round(scale * 100)}%
+                      </span>
+                      <ToolBtn label="Zoom in" onClick={() => setScale((s) => Math.min(1.8, +(s + 0.1).toFixed(2)))}>
+                        +
+                      </ToolBtn>
+                      <ToolBtn label="Reset zoom" onClick={() => setScale(1)}>
+                        Reset
+                      </ToolBtn>
+                      <a
+                        href={pdfUrl}
+                        download={`${doc.id}.pdf`}
+                        className="ml-1 rounded border border-[#E5EEF5] bg-white px-2 py-1 text-xs font-medium text-[#112130] hover:border-[#0C68BE]"
+                      >
+                        Download
+                      </a>
+                    </div>
                   </div>
 
-                  <div className="w-full sm:w-64">
-                    <input
-                      type="text"
-                      value={textSearch}
-                      onChange={(e) => setTextSearch(e.target.value)}
-                      placeholder="Find within text..."
-                      className="w-full rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] px-3 py-1.5 text-xs outline-none focus:border-[#0C68BE] focus:bg-white"
+                  <div style={{ position: "relative", width: "100%", minHeight: "90vh" }}>
+                    <PdfStage
+                      fileUrl={pdfUrl}
+                      pageNumber={pageNumber}
+                      scale={scale}
+                      onLoadSuccess={(n) => {
+                        setPageCount(n || pagesMeta);
+                      }}
+                      onPageChange={setPageNumber}
                     />
                   </div>
                 </div>
-
-                {/* Gazette Text Content */}
-                <div className="prose max-w-none text-xs sm:text-sm font-sans text-[#112130] leading-relaxed whitespace-pre-wrap">
-                  {doc.body}
-                </div>
               </div>
-            )}
-          </div>
+            </div>
 
-          {/* Details Rail */}
-          {detailsOpen && (
-            <aside className="w-full shrink-0 space-y-6 lg:w-80">
-              <div className="rounded-2xl border border-[#E5EEF5] bg-[#F5F8FB] p-5">
-                <h2 className="text-sm font-semibold text-[#0B151F]">Document Information</h2>
-                <dl className="mt-3 divide-y divide-[#E5EEF5] text-xs">
-                  <div className="flex justify-between py-2">
-                    <dt className="text-[#86929E]">Jurisdiction</dt>
-                    <dd className="font-semibold text-[#112130]">
-                      {flag} {countryName}
-                    </dd>
-                  </div>
-                  <div className="flex justify-between py-2">
-                    <dt className="text-[#86929E]">Category</dt>
-                    <dd className="font-semibold text-[#0C68BE]">{cat?.label}</dd>
-                  </div>
-                  <div className="flex justify-between py-2">
-                    <dt className="text-[#86929E]">Year Enacted</dt>
-                    <dd className="font-semibold text-[#112130]">{doc.year}</dd>
-                  </div>
-                  <div className="flex justify-between py-2">
-                    <dt className="text-[#86929E]">Status</dt>
-                    <dd className="font-semibold text-emerald-700">{doc.status || "In force"}</dd>
-                  </div>
-                  <div className="flex justify-between py-2">
-                    <dt className="text-[#86929E]">Official Source</dt>
-                    <dd className="max-w-[160px] truncate text-right font-medium text-[#112130]">
-                      {doc.source}
-                    </dd>
-                  </div>
-                </dl>
+            {/* Details rail — Lexark w-[20vw] max-w-[20vw] border-l */}
+            <section
+              id="lg-document-details"
+              aria-label="Document details"
+              aria-hidden={!detailsOpen}
+              className={`shrink-0 overflow-hidden border-gray-200 transition-[width,max-width,opacity,padding,border-color] duration-300 ease-in-out motion-reduce:transition-none ${
+                detailsOpen
+                  ? "w-full max-w-full border-l px-5 opacity-100 sm:w-[20vw] sm:max-w-[20vw]"
+                  : "w-0 max-w-0 border-l-0 px-0 opacity-0"
+              }`}
+            >
+              {detailsOpen && (
+                <div className="w-full shrink-0">
+                  <dl className="mb-5 divide-y divide-gray-100 border-y border-gray-100">
+                    <div className="flex justify-between gap-4 py-3 text-sm">
+                      <dt className="shrink-0 font-medium text-gray-600">Author</dt>
+                      <dd className="min-w-0 break-words text-right text-gray-800">{shortAuthor(doc.source)}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4 py-3 text-sm">
+                      <dt className="shrink-0 font-medium text-gray-600">Year</dt>
+                      <dd className="min-w-0 break-words text-right text-gray-800">{doc.year}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4 py-3 text-sm">
+                      <dt className="shrink-0 font-medium text-gray-600">Pages</dt>
+                      <dd className="min-w-0 break-words text-right text-gray-800">{pagesLabel}</dd>
+                    </div>
+                  </dl>
 
-                {/* Plain-Language Summary */}
-                <div className="mt-4 border-t border-[#E5EEF5] pt-4">
-                  <h3 className="text-xs font-semibold text-[#0B151F]">Summary &amp; Purpose</h3>
-                  <p className="mt-1.5 text-xs leading-relaxed text-[#677480]">
-                    {summaryOpen ? doc.summary : preview}
-                  </p>
-                  {doc.summary && doc.summary.length > 220 && (
+                  <div>
+                    <p className="text-justify text-sm leading-6 text-[#112130]">
+                      {summaryOpen ? doc.summary : preview}
+                    </p>
                     <button
                       type="button"
+                      className="mt-1 text-sm font-medium text-[#0C68BE] hover:underline"
                       onClick={() => setSummaryOpen((v) => !v)}
-                      className="mt-1 text-xs font-medium text-[#0C68BE] hover:underline"
                     >
-                      {summaryOpen ? "Show less" : "Read full summary"}
+                      {summaryOpen ? "See less" : "See more"}
                     </button>
-                  )}
-                </div>
-
-                {/* Matter Notes */}
-                <div className="mt-6 border-t border-[#E5EEF5] pt-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-semibold text-[#0B151F]">Practitioner Matter Notes</h3>
-                    {savedNote && <span className="text-[10px] font-semibold text-emerald-600">Saved</span>}
                   </div>
-                  <textarea
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Type client or brief notes for this document..."
-                    rows={4}
-                    className="mt-2 w-full rounded-xl border border-[#E5EEF5] bg-white p-2.5 text-xs text-[#112130] outline-none focus:border-[#0C68BE]"
-                  />
-                  <button
-                    type="button"
-                    onClick={saveNotes}
-                    className="mt-2 w-full rounded-xl bg-[#0C68BE] py-1.5 text-xs font-semibold text-white hover:bg-[#0F80EB]"
-                  >
-                    Save Notes
-                  </button>
+
+                  <div className="mt-6 border-t border-gray-100 pt-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium text-gray-600">My Notes</p>
+                      <button
+                        type="button"
+                        onClick={saveNotes}
+                        className="text-sm font-medium text-[#0C68BE] hover:underline"
+                      >
+                        {saved ? "Saved" : "Save"}
+                      </button>
+                    </div>
+                    <textarea
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      rows={5}
+                      placeholder="Private notes on this device…"
+                      className="mt-2 w-full rounded-md border border-[#E5EEF5] bg-[#FAFDFF] px-3 py-2 text-sm outline-none focus:border-[#0C68BE]"
+                    />
+                  </div>
+
+                  <p className="mt-4 text-[11px] leading-4 text-[#86929E]">
+                    {cat?.label} · {doc.citation}
+                  </p>
                 </div>
-              </div>
-            </aside>
-          )}
+              )}
+            </section>
+          </div>
         </div>
+      </main>
+    </div>
+  );
+}
+
+function ToolBtn({
+  children,
+  onClick,
+  label,
+  disabled,
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  label: string;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      title={label}
+      aria-label={label}
+      disabled={disabled}
+      onClick={onClick}
+      className="flex h-7 min-w-7 items-center justify-center rounded border border-[#E5EEF5] bg-white px-2 text-sm font-medium text-[#112130] hover:bg-white disabled:opacity-40"
+    >
+      {children}
+    </button>
+  );
+}
+
+function CategoryIcon({ color, label }: { color: string; label: string }) {
+  return (
+    <div
+      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl"
+      style={{ backgroundColor: `${color}18` }}
+      aria-hidden
+    >
+      <div
+        className="flex h-10 w-10 items-center justify-center rounded-lg text-[10px] font-bold uppercase text-white"
+        style={{ backgroundColor: color }}
+      >
+        {label.slice(0, 4)}
       </div>
     </div>
   );
 }
 
-function truncate(str: string, maxLen: number) {
-  if (!str || str.length <= maxLen) return str;
-  return str.slice(0, maxLen).trim() + "…";
+function truncate(s: string, n: number) {
+  const t = s.trim();
+  if (t.length <= n) return t;
+  return t.slice(0, n).trimEnd() + "…";
+}
+
+function shortAuthor(source: string) {
+  // Prefer a short “Author” label like Lexark’s NIMC chip
+  if (!source) return "—";
+  if (source.length <= 48) return source;
+  return source.slice(0, 46) + "…";
+}
+
+function LibraryIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <rect width="8" height="18" x="3" y="3" rx="1" />
+      <path d="M7 3v18" />
+      <path d="M20.4 18.9c.2.5-.1 1.1-.6 1.3l-1.9.7c-.5.2-1.1-.1-1.3-.6L11.1 5.1c-.2-.5.1-1.1.6-1.3l1.9-.7c.5-.2 1.1.1 1.3.6Z" />
+    </svg>
+  );
+}
+
+function ChevronDown() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+function LinkIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+      <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
+      <line x1="8" x2="16" y1="12" y2="12" />
+    </svg>
+  );
+}
+
+function ChatIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
+    </svg>
+  );
+}
+
+function PanelCloseIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M15 3v18" />
+      <path d="m8 9 3 3-3 3" />
+    </svg>
+  );
+}
+
+function PanelOpenIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path d="M15 3v18" />
+      <path d="m10 15-3-3 3-3" />
+    </svg>
+  );
 }

@@ -16,7 +16,6 @@ export default function SignInPage() {
   const [name, setName] = useState("");
   const [countryCode, setCountryCode] = useState("ZA");
   const [role, setRole] = useState<UserRole>("advocate");
-  const [organization, setOrganization] = useState("");
   const [message, setMessage] = useState<{ text: string; type: "success" | "error" } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,7 +36,7 @@ export default function SignInPage() {
       setMessage({ text: `Welcome back, ${email.split("@")[0]}! Signed in successfully.`, type: "success" });
       setTimeout(() => {
         router.push("/account");
-      }, 700);
+      }, 500);
     } catch {
       setMessage({ text: "Sign-in failed. Please try again.", type: "error" });
       setIsSubmitting(false);
@@ -67,12 +66,11 @@ export default function SignInPage() {
         password,
         countryCode,
         role,
-        organization: organization || undefined,
       });
       setMessage({ text: `Account created! Welcome to LulaGazette, ${name}.`, type: "success" });
       setTimeout(() => {
         router.push("/account");
-      }, 700);
+      }, 500);
     } catch {
       setMessage({ text: "Could not create account. Please try again.", type: "error" });
       setIsSubmitting(false);
@@ -88,56 +86,58 @@ export default function SignInPage() {
     });
     setTimeout(() => {
       router.push("/account");
-    }, 600);
+    }, 450);
   }
 
   return (
-    <div className="mx-auto flex min-h-[75vh] max-w-xl flex-col justify-center px-4 py-12 sm:px-6">
-      {/* If already signed in */}
+    <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-12 sm:px-6">
+      {/* Active User Banner */}
       {user && (
-        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-emerald-950">
+        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-950">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">{user.flag}</span>
+            <div className="flex items-center gap-2.5">
+              <span className="text-2xl">{user.flag}</span>
               <div>
-                <p className="font-semibold text-emerald-900">Currently signed in as {user.name}</p>
+                <p className="text-sm font-semibold text-emerald-900">Signed in as {user.name}</p>
                 <p className="text-xs text-emerald-700">
-                  {user.roleTitle} · {user.country} ({user.email})
+                  {user.roleTitle} · {user.country}
                 </p>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <Link
                 href="/account"
-                className="rounded-xl bg-emerald-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-800"
+                className="rounded-lg bg-emerald-700 px-2.5 py-1 text-xs font-semibold text-white hover:bg-emerald-800"
               >
-                My Account
+                Account
               </Link>
               <button
+                type="button"
                 onClick={logout}
-                className="rounded-xl border border-emerald-300 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
+                className="rounded-lg border border-emerald-300 bg-white px-2.5 py-1 text-xs font-semibold text-emerald-800 hover:bg-emerald-100"
               >
-                Sign Out
+                Sign out
               </button>
             </div>
           </div>
         </div>
       )}
 
-      <div className="rounded-3xl border border-[#E5EEF5] bg-white p-6 shadow-card sm:p-8">
-        {/* Tab switch */}
-        <div className="flex rounded-2xl border border-[#E5EEF5] bg-[#F5F8FB] p-1">
+      {/* Main Auth Card */}
+      <div className="rounded-3xl border border-lg-line bg-white p-8 shadow-card">
+        {/* Toggle Mode */}
+        <div className="flex rounded-xl border border-lg-line bg-lg-wash p-1">
           <button
             type="button"
             onClick={() => {
               setMode("signin");
               setMessage(null);
             }}
-            className={`flex-1 rounded-xl py-2 text-xs font-semibold transition ${
-              mode === "signin" ? "bg-white text-[#0B151F] shadow-xs" : "text-[#677480] hover:text-[#0B151F]"
+            className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition ${
+              mode === "signin" ? "bg-white text-lg-navy shadow-xs" : "text-lg-muted hover:text-lg-navy"
             }`}
           >
-            Sign In
+            Sign in
           </button>
           <button
             type="button"
@@ -145,26 +145,25 @@ export default function SignInPage() {
               setMode("signup");
               setMessage(null);
             }}
-            className={`flex-1 rounded-xl py-2 text-xs font-semibold transition ${
-              mode === "signup" ? "bg-white text-[#0B151F] shadow-xs" : "text-[#677480] hover:text-[#0B151F]"
+            className={`flex-1 rounded-lg py-1.5 text-xs font-semibold transition ${
+              mode === "signup" ? "bg-white text-lg-navy shadow-xs" : "text-lg-muted hover:text-lg-navy"
             }`}
           >
-            Create Account
+            Create account
           </button>
         </div>
 
         <div className="mt-6">
-          <h1 className="font-display text-2xl font-semibold text-[#0B151F]">
-            {mode === "signin" ? "Sign in to LulaGazette" : "Join the Pan-African Legal Network"}
+          <h1 className="font-display text-3xl text-lg-navy">
+            {mode === "signin" ? "Sign in" : "Create account"}
           </h1>
-          <p className="mt-1 text-xs text-[#677480]">
+          <p className="mt-2 text-sm text-lg-muted">
             {mode === "signin"
-              ? "Access full official gazettes, save matters, run multi-source scrapers, and research across African courts."
-              : "Register your profile across 54 African jurisdictions. Save documents, notes, and research history."}
+              ? "Access official gazettes, saved matters, and research tools across 54 African jurisdictions."
+              : "Register your profile to access Pan-African gazette records and court decisions."}
           </p>
         </div>
 
-        {/* Message notification */}
         {message && (
           <div
             className={`mt-4 rounded-xl p-3 text-xs font-medium ${
@@ -177,168 +176,125 @@ export default function SignInPage() {
           </div>
         )}
 
-        {/* Sign In Form */}
         {mode === "signin" ? (
           <form onSubmit={handleSignIn} className="mt-6 space-y-4">
-            <div>
-              <label className="block text-xs font-medium text-[#112130]">Email address</label>
+            <label className="block text-sm font-medium text-lg-slate">
+              Email
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="advocate@chambers.co.za"
+                placeholder="you@firm.co.za"
                 required
-                className="mt-1.5 w-full rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] px-3.5 py-2.5 text-xs text-[#112130] outline-none focus:border-[#0C68BE] focus:bg-white focus:ring-2 focus:ring-[#0C68BE]/20"
+                className="mt-1.5 w-full rounded-xl border border-lg-line bg-lg-wash px-3 py-2.5 text-sm text-lg-ink outline-none focus:border-lg-blue focus:bg-white focus:ring-2 focus:ring-lg-blue/20"
               />
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label className="block text-xs font-medium text-[#112130]">Password</label>
-                <span className="text-[11px] text-[#0C68BE] hover:underline cursor-pointer">Forgot password?</span>
-              </div>
+            </label>
+            <label className="block text-sm font-medium text-lg-slate">
+              Password
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="mt-1.5 w-full rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] px-3.5 py-2.5 text-xs text-[#112130] outline-none focus:border-[#0C68BE] focus:bg-white focus:ring-2 focus:ring-[#0C68BE]/20"
+                className="mt-1.5 w-full rounded-xl border border-lg-line bg-lg-wash px-3 py-2.5 text-sm text-lg-ink outline-none focus:border-lg-blue focus:bg-white focus:ring-2 focus:ring-lg-blue/20"
               />
-            </div>
-
+            </label>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-2 w-full rounded-full bg-[#0C68BE] py-3 text-xs font-semibold text-white transition hover:bg-[#0F80EB] disabled:opacity-60"
+              className="w-full rounded-full bg-lg-blue py-3 text-sm font-semibold text-white transition hover:bg-lg-blue-bright disabled:opacity-60"
             >
-              {isSubmitting ? "Signing in..." : "Sign In"}
+              {isSubmitting ? "Signing in..." : "Sign in"}
             </button>
           </form>
         ) : (
-          /* Sign Up Form */
           <form onSubmit={handleSignUp} className="mt-6 space-y-4">
-            <div>
-              <label className="block text-xs font-medium text-[#112130]">Full name</label>
+            <label className="block text-sm font-medium text-lg-slate">
+              Full Name
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Adv. Nomsa Dlamini"
                 required
-                className="mt-1.5 w-full rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] px-3.5 py-2.5 text-xs text-[#112130] outline-none focus:border-[#0C68BE] focus:bg-white focus:ring-2 focus:ring-[#0C68BE]/20"
+                className="mt-1.5 w-full rounded-xl border border-lg-line bg-lg-wash px-3 py-2.5 text-sm text-lg-ink outline-none focus:border-lg-blue focus:bg-white focus:ring-2 focus:ring-lg-blue/20"
               />
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-[#112130]">Email address</label>
+            </label>
+            <label className="block text-sm font-medium text-lg-slate">
+              Email
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="nomsa@law.org.za"
                 required
-                className="mt-1.5 w-full rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] px-3.5 py-2.5 text-xs text-[#112130] outline-none focus:border-[#0C68BE] focus:bg-white focus:ring-2 focus:ring-[#0C68BE]/20"
+                className="mt-1.5 w-full rounded-xl border border-lg-line bg-lg-wash px-3 py-2.5 text-sm text-lg-ink outline-none focus:border-lg-blue focus:bg-white focus:ring-2 focus:ring-lg-blue/20"
               />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-medium text-[#112130]">Country (54 Nations)</label>
-                <select
-                  value={countryCode}
-                  onChange={(e) => setCountryCode(e.target.value)}
-                  className="mt-1.5 w-full rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] px-3 py-2 text-xs text-[#112130] outline-none focus:border-[#0C68BE] focus:bg-white focus:ring-2 focus:ring-[#0C68BE]/20"
-                >
-                  {africanCountries.map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.flag} {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-[#112130]">Profession / Role</label>
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value as UserRole)}
-                  className="mt-1.5 w-full rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] px-3 py-2 text-xs text-[#112130] outline-none focus:border-[#0C68BE] focus:bg-white focus:ring-2 focus:ring-[#0C68BE]/20"
-                >
-                  <option value="advocate">Advocate / Barrister</option>
-                  <option value="attorney">Admitted Attorney / Solicitor</option>
-                  <option value="counsel">Corporate Legal Counsel</option>
-                  <option value="researcher">Legal Researcher / Scholar</option>
-                  <option value="student">Law Student</option>
-                  <option value="citizen">Individual Citizen / Business</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-[#112130]">Chambers / Firm / University (optional)</label>
-              <input
-                type="text"
-                value={organization}
-                onChange={(e) => setOrganization(e.target.value)}
-                placeholder="Cape Bar / Bowman Gilfillan / Legal Aid"
-                className="mt-1.5 w-full rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] px-3.5 py-2 text-xs text-[#112130] outline-none focus:border-[#0C68BE] focus:bg-white focus:ring-2 focus:ring-[#0C68BE]/20"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-medium text-[#112130]">Password</label>
+            </label>
+            <label className="block text-sm font-medium text-lg-slate">
+              Jurisdiction (54 African Countries)
+              <select
+                value={countryCode}
+                onChange={(e) => setCountryCode(e.target.value)}
+                className="mt-1.5 w-full rounded-xl border border-lg-line bg-lg-wash px-3 py-2.5 text-sm text-lg-ink outline-none focus:border-lg-blue focus:bg-white focus:ring-2 focus:ring-lg-blue/20"
+              >
+                {africanCountries.map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.flag} {c.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block text-sm font-medium text-lg-slate">
+              Password
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="mt-1.5 w-full rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] px-3.5 py-2.5 text-xs text-[#112130] outline-none focus:border-[#0C68BE] focus:bg-white focus:ring-2 focus:ring-[#0C68BE]/20"
+                className="mt-1.5 w-full rounded-xl border border-lg-line bg-lg-wash px-3 py-2.5 text-sm text-lg-ink outline-none focus:border-lg-blue focus:bg-white focus:ring-2 focus:ring-lg-blue/20"
               />
-            </div>
-
+            </label>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-2 w-full rounded-full bg-[#0C68BE] py-3 text-xs font-semibold text-white transition hover:bg-[#0F80EB] disabled:opacity-60"
+              className="w-full rounded-full bg-lg-blue py-3 text-sm font-semibold text-white transition hover:bg-lg-blue-bright disabled:opacity-60"
             >
-              {isSubmitting ? "Creating Account..." : "Create Account & Sign In"}
+              {isSubmitting ? "Creating account..." : "Create account"}
             </button>
           </form>
         )}
 
-        {/* Demo Fast Logins */}
-        <div className="mt-8 border-t border-[#E5EEF5] pt-6">
-          <p className="text-center text-xs font-medium text-[#86929E]">
-            Or test instantly with verified African practitioner profiles:
+        {/* Instant Demo Sign-in */}
+        <div className="mt-8 border-t border-lg-line pt-5">
+          <p className="text-center text-xs font-medium text-lg-muted">
+            Instant demo sign-in:
           </p>
-
-          <div className="mt-4 grid grid-cols-2 gap-2">
+          <div className="mt-3 grid grid-cols-2 gap-2">
             {DEMO_PROFILES.map((demo) => (
               <button
                 key={demo.id}
                 type="button"
                 onClick={() => handleDemoSelect(demo.id)}
-                className="flex items-center gap-2.5 rounded-xl border border-[#E5EEF5] bg-[#F5F8FB] p-2.5 text-left transition hover:border-[#0C68BE] hover:bg-white hover:shadow-xs"
+                className="flex items-center gap-2 rounded-xl border border-lg-line bg-lg-wash px-2.5 py-2 text-left transition hover:border-lg-blue hover:bg-white"
               >
-                <span className="text-xl">{demo.flag}</span>
+                <span className="text-lg">{demo.flag}</span>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-xs font-semibold text-[#112130]">{demo.name}</p>
-                  <p className="truncate text-[10px] text-[#677480]">
-                    {demo.countryName} · {demo.role}
-                  </p>
+                  <p className="truncate text-xs font-semibold text-lg-slate">{demo.name}</p>
+                  <p className="truncate text-[10px] text-lg-muted">{demo.countryName}</p>
                 </div>
               </button>
             ))}
           </div>
         </div>
 
-        <div className="mt-6 text-center">
-          <Link href="/s" className="text-xs font-medium text-[#0C68BE] hover:underline">
-            ← Continue browsing library without signing in
+        <p className="mt-6 text-center text-sm text-lg-muted">
+          <Link href="/s" className="font-semibold text-lg-blue hover:underline">
+            Continue without signing in
           </Link>
-        </div>
+        </p>
       </div>
     </div>
   );

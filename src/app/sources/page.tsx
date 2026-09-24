@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { externalSources, ExternalSource } from "@/data/sources";
+import { externalSources } from "@/data/sources";
 import { africanCountries } from "@/data/africanCountries";
-import { pullAllSources, scrapeSource, ScrapedDocument, ScrapeLogEntry } from "@/lib/scraper";
+import { pullAllSources, scrapeSource, ScrapedDocument } from "@/lib/scraper";
 import { useAuth } from "@/context/AuthContext";
 
 export default function SourcesPage() {
@@ -14,7 +14,6 @@ export default function SourcesPage() {
   const [query, setQuery] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [logs, setLogs] = useState<ScrapeLogEntry[]>([]);
   const [harvested, setHarvested] = useState<ScrapedDocument[]>([]);
   const [hasRun, setHasRun] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -35,21 +34,13 @@ export default function SourcesPage() {
   async function triggerPull(showProgress = true) {
     if (showProgress) {
       setIsLoading(true);
-      setProgress(15);
-      setLogs([
-        {
-          timestamp: new Date().toLocaleTimeString(),
-          level: "info",
-          message: `Initiating connection to legal sources (Country: ${countryFilter.toUpperCase()}, Source: ${selectedSource})...`,
-        },
-      ]);
+      setProgress(25);
     }
 
     try {
-      if (showProgress) setProgress(45);
+      if (showProgress) setProgress(55);
 
       let docs: ScrapedDocument[] = [];
-      let newLogs: ScrapeLogEntry[] = [];
 
       if (selectedSource === "all") {
         const res = await pullAllSources({
@@ -57,26 +48,16 @@ export default function SourcesPage() {
           query: query || undefined,
         });
         docs = res.documents;
-        newLogs = res.logs;
       } else {
         const res = await scrapeSource(selectedSource, {
           country: countryFilter === "all" ? undefined : countryFilter,
           query: query || undefined,
         });
         docs = res.documents;
-        newLogs = [
-          {
-            timestamp: new Date().toLocaleTimeString(),
-            level: "success",
-            message: res.message,
-            sourceId: selectedSource,
-          },
-        ];
       }
 
       if (showProgress) {
-        setProgress(85);
-        setLogs((prev) => [...prev, ...newLogs]);
+        setProgress(90);
       }
 
       setHarvested(docs);
@@ -85,18 +66,10 @@ export default function SourcesPage() {
 
       if (showProgress) {
         setProgress(100);
-        setTimeout(() => setIsLoading(false), 400);
+        setTimeout(() => setIsLoading(false), 300);
       }
     } catch {
       if (showProgress) {
-        setLogs((prev) => [
-          ...prev,
-          {
-            timestamp: new Date().toLocaleTimeString(),
-            level: "error",
-            message: "Failed to connect to one or more endpoints. Retrying with cached fallback.",
-          },
-        ]);
         setIsLoading(false);
       }
     }
@@ -324,7 +297,7 @@ export default function SourcesPage() {
         </div>
       </div>
 
-      {/* Progress & Live Activity Terminal */}
+      {/* Subtle Progress Bar */}
       {isLoading && (
         <div className="mt-4 overflow-hidden rounded-2xl border border-sky-200 bg-sky-50/50 p-4">
           <div className="flex items-center justify-between text-xs font-semibold text-sky-900">
@@ -336,39 +309,6 @@ export default function SourcesPage() {
               className="h-full bg-[#0C68BE] transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             />
-          </div>
-        </div>
-      )}
-
-      {/* Terminal log panel */}
-      {logs.length > 0 && (
-        <div className="mt-4 overflow-hidden rounded-2xl border border-[#112130] bg-[#0B151F] text-xs text-white">
-          <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-              <span className="font-mono text-[11px] font-semibold uppercase tracking-wider text-white/70">
-                Scraper Ingestion Logs
-              </span>
-            </div>
-            <span className="text-[10px] text-white/40">{logs.length} events logged</span>
-          </div>
-          <div className="max-h-48 overflow-y-auto p-4 font-mono text-[11px] leading-relaxed">
-            {logs.map((log, i) => (
-              <div key={i} className="flex gap-2">
-                <span className="text-white/40">[{log.timestamp}]</span>
-                <span
-                  className={
-                    log.level === "success"
-                      ? "text-emerald-400"
-                      : log.level === "error"
-                      ? "text-rose-400"
-                      : "text-sky-300"
-                  }
-                >
-                  {log.message}
-                </span>
-              </div>
-            ))}
           </div>
         </div>
       )}
@@ -407,6 +347,7 @@ export default function SourcesPage() {
             <button
               onClick={() => {
                 setCountryFilter("all");
+                setSelectedCountry("all");
                 setSelectedSource("all");
                 setQuery("");
                 triggerPull(true);

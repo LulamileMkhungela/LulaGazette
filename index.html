@@ -259,24 +259,7 @@
     .doc-card .citation { font-family: monospace; font-size: 12px; color: var(--blue); margin-top: 4px; }
     .doc-card .summary { font-size: 13px; color: var(--soft); margin-top: 8px; line-height: 1.5; }
 
-    /* Scraper Console */
-    .console-box {
-      margin-top: 28px;
-      background: #0B151F;
-      border-radius: 18px;
-      padding: 24px;
-      color: #fff;
-      font-family: monospace;
-      font-size: 12.5px;
-    }
-    .console-header {
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-      padding-bottom: 12px; margin-bottom: 14px;
-    }
-    .console-logs { max-height: 200px; overflow-y: auto; line-height: 1.6; }
-    .log-success { color: #34D399; }
-    .log-info { color: #7DD3FC; }
+
 
     /* Modal */
     .modal-overlay {
@@ -450,17 +433,6 @@
             </div>
           </div>
 
-          <!-- Console Output -->
-          <div class="console-box" id="consoleBox">
-            <div class="console-header">
-              <span>● HARVESTER ENGINE STATUS: CONNECTED &amp; READY</span>
-              <span id="logTimestamp">--:--:--</span>
-            </div>
-            <div class="console-logs" id="consoleLogs">
-              <div class="log-info">[READY] Connected to 22 pan-African legal repositories and gazette printers.</div>
-              <div class="log-info">[INFO] Click "Pull Latest Data" to trigger real-time harvest and update session library.</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -807,8 +779,6 @@
     document.addEventListener("DOMContentLoaded", () => {
       renderDocuments(CORPUS);
       renderCountries();
-      updateTimestamp();
-      setInterval(updateTimestamp, 1000);
 
       // Check stored user
       try {
@@ -819,11 +789,6 @@
         }
       } catch(e) {}
     });
-
-    function updateTimestamp() {
-      const el = document.getElementById("logTimestamp");
-      if (el) el.textContent = new Date().toLocaleTimeString();
-    }
 
     function renderDocuments(list) {
       const grid = document.getElementById("documentsGrid");
@@ -944,24 +909,17 @@
 
     // Live Scraper Simulation
     function runLiveScraper() {
-      const source = document.getElementById("scraperSourceSelect").value;
       const btn = document.getElementById("runScraperBtn");
-      const logs = document.getElementById("consoleLogs");
-
       btn.disabled = true;
       btn.textContent = "⏳ Harvesting...";
 
-      const time = new Date().toLocaleTimeString();
-      logs.innerHTML += `<div class="log-info">[${time}] Initiating live harvest for source: ${source.toUpperCase()}...</div>`;
-      logs.innerHTML += `<div class="log-info">[${time}] Querying African Legal Information Institute endpoints...</div>`;
-
       setTimeout(() => {
-        logs.innerHTML += `<div class="log-info">[${time}] Verified SSL handshakes with African gazette repositories.</div>`;
-        logs.innerHTML += `<div class="log-success">[${time}] ✓ Successfully extracted 8 recent official gazette notices and apex rulings!</div>`;
-        logs.scrollTop = logs.scrollHeight;
         btn.disabled = false;
-        btn.textContent = "⚡ Pull Latest Data";
-      }, 1200);
+        btn.textContent = "✓ Ingested Latest Data";
+        setTimeout(() => {
+          btn.textContent = "⚡ Pull Latest Data";
+        }, 1600);
+      }, 700);
     }
 
     // Document Modal View
