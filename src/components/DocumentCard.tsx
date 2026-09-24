@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { categories, LegalDocument } from "@/data/legal";
 import { pageCountFor } from "@/lib/search";
+import { getCountryFlag } from "@/data/africanCountries";
 
 export function DocumentCard({
   doc,
@@ -11,6 +12,8 @@ export function DocumentCard({
 }) {
   const cat = categories.find((c) => c.id === doc.category);
   const pages = pageCountFor(doc.id, doc.body.length);
+  const flag = doc.flag || getCountryFlag(doc.countryCode);
+  const countryDisplay = doc.country || doc.jurisdiction || "South Africa";
 
   return (
     <Link
@@ -24,10 +27,16 @@ export function DocumentCard({
         >
           {cat?.label ?? doc.category}
         </span>
+        <span className="inline-flex items-center gap-1 rounded bg-[#F5F8FB] px-2.5 py-0.5 text-[11px] font-medium text-[#112130]">
+          <span>{flag}</span>
+          <span>{countryDisplay}</span>
+        </span>
         <span className="rounded bg-[#F5F8FB] px-2.5 py-0.5 text-[11px] font-medium text-[#677480]">
           {doc.year}
         </span>
-        <span className="rounded bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-[#298D62]">Free</span>
+        <span className="rounded bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-[#298D62]">
+          {doc.status || "In force"}
+        </span>
         <span className="text-[11px] text-[#86929E]">
           {pages} {pages === 1 ? "page" : "pages"}
         </span>

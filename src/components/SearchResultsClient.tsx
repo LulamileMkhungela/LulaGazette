@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { categories, LegalDocument } from "@/data/legal";
+import { getCountryByCode } from "@/data/africanCountries";
+import { useAuth } from "@/context/AuthContext";
 import { buildSearchHref, pageCountFor, SearchQuery, SortKey } from "@/lib/search";
 import { MobileFilters, SearchFilters } from "@/components/SearchFilters";
 
@@ -23,10 +25,13 @@ export function SearchResultsClient({
   totalPages: number;
 }) {
   const router = useRouter();
+  const { selectedCountry } = useAuth();
   const sort = query.sort || "year-desc";
   const limit = query.limit || 20;
   const page = query.page || 1;
   const catLabel = categories.find((c) => c.id === query.c)?.label;
+  const activeCountryCode = query.country || (selectedCountry !== "all" ? selectedCountry : undefined);
+  const activeCountryObj = getCountryByCode(activeCountryCode);
 
   // LulaGazette default is grid (grid segment selected in their HTML)
   const [view, setView] = useState<ViewMode>("grid");
@@ -96,9 +101,26 @@ export function SearchResultsClient({
                 ) : null}
                 {catLabel ? <span className="text-[#86929E]"> · {catLabel}</span> : null}
               </p>
-              <p className="text-xs text-[#86929E]">
-                {total} document{total === 1 ? "" : "s"}
-              </p>
+              {activeCountryCode && activeCountryCode !== "all" ? (
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                  <span className="inline-flex items-center gap-1 rounded-md bg-[#0C68BE]/10 px-2 py-0.5 text-xs font-semibold text-[#0C68BE]">
+                    <span>{activeCountryObj?.flag || "🌍"}</span>
+                    <span>{activeCountryObj?.name || activeCountryCode.toUpperCase()}</span>
+                  </span>
+                  <span className="text-[11px] text-[#86929E]">
+                    {activeCountryCode.toUpperCase() === "ZA"
+                      ? "· Non-SA documents excluded"
+                      : "· South African documents excluded"}
+                  </span>
+                  <span className="text-xs text-[#86929E]">
+                    · {total} document{total === 1 ? "" : "s"}
+                  </span>
+                </div>
+              ) : (
+                <p className="text-xs text-[#86929E]">
+                  {total} document{total === 1 ? "" : "s"} across all African jurisdictions
+                </p>
+              )}
             </div>
 
             <div className="ml-auto flex flex-wrap items-center justify-end gap-2">

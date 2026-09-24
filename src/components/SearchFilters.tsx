@@ -6,10 +6,27 @@ import { FormEvent, useState } from "react";
 import { categories } from "@/data/legal";
 import { buildSearchHref, SearchQuery } from "@/lib/search";
 
+const TOP_JURISDICTIONS = [
+  { code: "all", label: "All Africa (54 nations)", flag: "🌍" },
+  { code: "ZA", label: "South Africa", flag: "🇿🇦" },
+  { code: "KE", label: "Kenya", flag: "🇰🇪" },
+  { code: "NG", label: "Nigeria", flag: "🇳🇬" },
+  { code: "GH", label: "Ghana", flag: "🇬🇭" },
+  { code: "EG", label: "Egypt", flag: "🇪🇬" },
+  { code: "BW", label: "Botswana", flag: "🇧🇼" },
+  { code: "NA", label: "Namibia", flag: "🇳🇦" },
+  { code: "RW", label: "Rwanda", flag: "🇷🇼" },
+  { code: "TZ", label: "Tanzania", flag: "🇹🇿" },
+  { code: "UG", label: "Uganda", flag: "🇺🇬" },
+  { code: "ZW", label: "Zimbabwe", flag: "🇿🇼" },
+  { code: "AU", label: "Pan-African / AU Bodies", flag: "🏛️" },
+];
+
 export function SearchFilters({ query }: { query: SearchQuery }) {
   const router = useRouter();
   const [from, setFrom] = useState(query.startDate || "");
   const [to, setTo] = useState(query.endDate || "");
+  const [openCountry, setOpenCountry] = useState(true);
   const [openLicense, setOpenLicense] = useState(true);
   const [openDate, setOpenDate] = useState(true);
   const [openCat, setOpenCat] = useState(true);
@@ -43,7 +60,46 @@ export function SearchFilters({ query }: { query: SearchQuery }) {
         </Link>
       </div>
 
-      <div className="min-h-0 overflow-y-auto rounded-lg border border-[#EBF0F5] bg-white">
+      <div className="min-h-0 overflow-y-auto rounded-xl border border-[#EBF0F5] bg-white">
+        {/* African Jurisdiction / Country Filter */}
+        <section className="border-b border-[#EBF0F5]">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between px-3 py-3 text-left"
+            onClick={() => setOpenCountry((v) => !v)}
+          >
+            <p className="text-sm font-medium text-[#0C68BE]">African Jurisdiction</p>
+            <Chevron open={openCountry} />
+          </button>
+          {openCountry && (
+            <div className="flex flex-col gap-1 px-3 pb-3">
+              {TOP_JURISDICTIONS.map((j) => {
+                const active = (query.country || "all").toUpperCase() === j.code.toUpperCase();
+                return (
+                  <Link
+                    key={j.code}
+                    href={buildSearchHref({ ...query, country: j.code === "all" ? undefined : j.code, page: 1 })}
+                    className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs transition ${
+                      active
+                        ? "bg-[#0C68BE]/10 font-bold text-[#0C68BE]"
+                        : "text-[#112130] hover:bg-[#F5F8FB]"
+                    }`}
+                  >
+                    <span>{j.flag}</span>
+                    <span className="truncate">{j.label}</span>
+                  </Link>
+                );
+              })}
+              <Link
+                href="/countries"
+                className="mt-1 pt-1 text-center text-[11px] font-semibold text-[#0C68BE] border-t border-[#EBF0F5] hover:underline"
+              >
+                View all 54 African countries →
+              </Link>
+            </div>
+          )}
+        </section>
+
         {/* License */}
         <section className="border-b border-[#EBF0F5]">
           <button
@@ -94,38 +150,33 @@ export function SearchFilters({ query }: { query: SearchQuery }) {
             className="flex w-full items-center justify-between px-3 py-3 text-left"
             onClick={() => setOpenDate((v) => !v)}
           >
-            <p className="text-sm font-medium text-[#0C68BE]">Date published</p>
+            <p className="text-sm font-medium text-[#0C68BE]">Year published</p>
             <Chevron open={openDate} />
           </button>
           {openDate && (
-            <form onSubmit={applyDates} className="flex items-end gap-3 px-3 pb-3">
-              <div className="flex-1">
-                <p className="text-gray-400 text-xs">From</p>
+            <form onSubmit={applyDates} className="px-3 pb-3">
+              <div className="flex items-center gap-2">
                 <input
+                  type="text"
+                  placeholder="From"
                   value={from}
                   onChange={(e) => setFrom(e.target.value)}
-                  placeholder="Year"
-                  inputMode="numeric"
-                  aria-label="Start year"
-                  className="mt-1 w-full rounded-md border border-[#E5EEF5] px-2 py-1.5 text-sm outline-none focus:border-[#0C68BE]"
+                  className="w-1/2 rounded border border-[#E5EEF5] px-2 py-1.5 text-xs text-[#112130] outline-none"
                 />
-              </div>
-              <div className="flex-1">
-                <p className="text-gray-400 text-xs">To</p>
+                <span className="text-xs text-[#86929E]">—</span>
                 <input
+                  type="text"
+                  placeholder="To"
                   value={to}
                   onChange={(e) => setTo(e.target.value)}
-                  placeholder="Year"
-                  inputMode="numeric"
-                  aria-label="End year"
-                  className="mt-1 w-full rounded-md border border-[#E5EEF5] px-2 py-1.5 text-sm outline-none focus:border-[#0C68BE]"
+                  className="w-1/2 rounded border border-[#E5EEF5] px-2 py-1.5 text-xs text-[#112130] outline-none"
                 />
               </div>
               <button
                 type="submit"
-                className="rounded-md bg-[#0C68BE] px-2 py-1.5 text-xs font-semibold text-white"
+                className="mt-2 w-full rounded bg-[#0C68BE] py-1 text-xs font-semibold text-white hover:bg-[#0F80EB]"
               >
-                Go
+                Apply
               </button>
             </form>
           )}
@@ -142,28 +193,29 @@ export function SearchFilters({ query }: { query: SearchQuery }) {
             <Chevron open={openCat} />
           </button>
           {openCat && (
-            <div className="flex flex-col gap-1 px-2 pb-3">
+            <div className="flex flex-col gap-1 px-3 pb-3">
               <Link
                 href={buildSearchHref({ ...query, c: undefined, page: 1 })}
-                className={`rounded-md px-2 py-1.5 text-sm ${
-                  !query.c ? "bg-[#0C68BE]/10 font-medium text-[#0C68BE]" : "text-[#112130] hover:bg-[#F5F8FB]"
+                className={`rounded px-2 py-1.5 text-xs ${
+                  !query.c ? "bg-[#0C68BE]/10 font-bold text-[#0C68BE]" : "text-[#112130] hover:bg-[#F5F8FB]"
                 }`}
               >
                 All categories
               </Link>
-              {categories.map((c) => (
-                <Link
-                  key={c.id}
-                  href={buildSearchHref({ ...query, c: c.id, page: 1 })}
-                  className={`rounded-md px-2 py-1.5 text-sm ${
-                    query.c === c.id
-                      ? "bg-[#0C68BE]/10 font-medium text-[#0C68BE]"
-                      : "text-[#112130] hover:bg-[#F5F8FB]"
-                  }`}
-                >
-                  {c.label}
-                </Link>
-              ))}
+              {categories.map((c) => {
+                const active = query.c === c.id;
+                return (
+                  <Link
+                    key={c.id}
+                    href={buildSearchHref({ ...query, c: c.id, page: 1 })}
+                    className={`rounded px-2 py-1.5 text-xs ${
+                      active ? "bg-[#0C68BE]/10 font-bold text-[#0C68BE]" : "text-[#112130] hover:bg-[#F5F8FB]"
+                    }`}
+                  >
+                    {c.label}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </section>
@@ -232,6 +284,25 @@ export function MobileFilters({ query }: { query: SearchQuery }) {
             Close
           </button>
         </div>
+
+        <p className="mb-2 text-sm font-medium text-[#0C68BE]">African Jurisdiction</p>
+        <div className="mb-4 flex flex-wrap gap-1.5">
+          {TOP_JURISDICTIONS.map((j) => (
+            <Link
+              key={j.code}
+              href={buildSearchHref({ ...query, country: j.code === "all" ? undefined : j.code, page: 1 })}
+              onClick={() => setOpen(false)}
+              className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                (query.country || "all").toUpperCase() === j.code.toUpperCase()
+                  ? "bg-[#0C68BE] text-white"
+                  : "bg-[#F5F8FB] text-[#112130]"
+              }`}
+            >
+              {j.flag} {j.label.split(" ")[0]}
+            </Link>
+          ))}
+        </div>
+
         <p className="mb-2 text-sm font-medium text-[#0C68BE]">License</p>
         <div className="mb-4 flex gap-2">
           {(["all", "free", "premium"] as const).map((id) => (
@@ -247,7 +318,8 @@ export function MobileFilters({ query }: { query: SearchQuery }) {
             </Link>
           ))}
         </div>
-        <p className="mb-2 text-sm font-medium text-[#0C68BE]">Date published</p>
+
+        <p className="mb-2 text-sm font-medium text-[#0C68BE]">Year published</p>
         <form
           className="mb-4 flex gap-2"
           onSubmit={(e) => {
@@ -274,6 +346,7 @@ export function MobileFilters({ query }: { query: SearchQuery }) {
             Go
           </button>
         </form>
+
         <p className="mb-2 text-sm font-medium text-[#0C68BE]">Category</p>
         <div className="flex flex-col gap-1 pb-6">
           {categories.map((c) => (

@@ -4,16 +4,45 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { buildSearchHref } from "@/lib/search";
+import { useAuth } from "@/context/AuthContext";
 
-const popular = [
-  "PIE eviction",
-  "CCMA unfair dismissal",
-  "POPIA 2025",
-  "National Health Insurance",
-  "Expropriation Act 2024",
-  "Small Claims summons",
-  "consumer refund CPA",
-  "Companies Act directors",
+const POPULAR_BY_COUNTRY: Record<string, string[]> = {
+  ZA: [
+    "PIE eviction",
+    "CCMA unfair dismissal",
+    "POPIA 2025",
+    "Companies Act directors",
+    "Small Claims summons",
+    "Consumer Protection Act",
+  ],
+  KE: [
+    "Constitution 2010",
+    "Data Protection Act 2019",
+    "Employment Act Cap 226",
+    "Raila Odinga v IEBC",
+    "Civil Procedure Rules",
+  ],
+  NG: [
+    "CAMA 2020",
+    "Nigeria Data Protection Act 2023",
+    "AG Lagos v AG Federation",
+    "Arbitration and Mediation Act",
+    "Federal Gazette",
+  ],
+  GH: [
+    "Companies Act 2019 (Act 992)",
+    "Labour Act 651",
+    "Data Protection Act 843",
+    "Supreme Court Ghana",
+  ],
+};
+
+const DEFAULT_POPULAR = [
+  "AfCFTA Protocol",
+  "Constitutional supremacy",
+  "Data protection",
+  "Employment unfair dismissal",
+  "Official gazette",
 ];
 
 export function SearchBox({
@@ -26,13 +55,19 @@ export function SearchBox({
   category?: string;
 }) {
   const router = useRouter();
+  const { selectedCountry } = useAuth();
   const [q, setQ] = useState(initialQuery);
 
+  const countryKey = (selectedCountry || "ZA").toUpperCase();
+  const popular = POPULAR_BY_COUNTRY[countryKey] || DEFAULT_POPULAR;
+
   function go(query: string) {
+    const countryParam = selectedCountry && selectedCountry !== "all" ? selectedCountry : undefined;
     router.push(
       buildSearchHref({
         q: query.trim() || undefined,
         c: category && category !== "all" ? category : undefined,
+        country: countryParam,
         sort: "year-desc",
         limit: 20,
         page: 1,

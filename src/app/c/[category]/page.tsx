@@ -11,7 +11,7 @@ export default function CollectionRedirect({
   searchParams,
 }: {
   params: { category: string };
-  searchParams?: { sort?: string; startYear?: string; startDate?: string; q?: string };
+  searchParams?: { sort?: string; startYear?: string; startDate?: string; q?: string; country?: string };
 }) {
   const cat = categories.find((c) => c.id === params.category);
   const sort = (searchParams?.sort as "year-desc" | "year-asc" | "title-asc" | "title-desc") || "year-desc";
@@ -19,6 +19,7 @@ export default function CollectionRedirect({
     buildSearchHref({
       c: cat?.id,
       q: searchParams?.q,
+      country: searchParams?.country,
       sort,
       startDate: searchParams?.startDate || searchParams?.startYear,
       limit: 20,

@@ -2,16 +2,43 @@
 
 import Link from "next/link";
 import { useAudience } from "@/context/AudienceContext";
+import { useAuth } from "@/context/AuthContext";
+import { getCountryByCode } from "@/data/africanCountries";
 
 export function HomeNextSteps() {
   const { isLawyer } = useAudience();
+  const { selectedCountry } = useAuth();
+  const countryCode = (selectedCountry || "ZA").toUpperCase();
+  const countryObj = getCountryByCode(selectedCountry);
+
+  function getDirectoryTeaser(): string {
+    if (countryCode === "ZA") {
+      return "Courts, CCMA, Legal Aid, regulators — directory gallery.";
+    }
+    if (countryCode === "NA") {
+      return "Supreme Court, Labour Commissioner, Legal Assistance Centre, NamRA — directory gallery.";
+    }
+    if (countryCode === "KE") {
+      return "Supreme Court, ELRC, National Legal Aid, KRA — directory gallery.";
+    }
+    if (countryCode === "NG") {
+      return "Supreme Court, Industrial Court, Legal Aid Council, FIRS — directory gallery.";
+    }
+    if (countryCode === "GH") {
+      return "Supreme Court, Labour Commission, Legal Aid Commission, GRA — directory gallery.";
+    }
+    if (countryObj) {
+      return `${countryObj.apexCourt}, tribunals, legal aid, regulators — directory gallery.`;
+    }
+    return "Apex courts, tribunals, legal aid, regulators — Pan-African directory.";
+  }
 
   const items = isLawyer
     ? [
         {
-          href: "/lawyers",
+          href: "/workspace",
           title: "Matter notes",
-          body: "Paste licensed headnotes and keep procedure checklists on this device.",
+          body: `Keep matter folders, headnotes and filing checklists for ${countryObj ? countryObj.name : "active matters"}.`,
         },
         {
           href: "/templates?aud=lawyer",
@@ -21,7 +48,9 @@ export function HomeNextSteps() {
         {
           href: "/courts",
           title: "Courts & procedure",
-          body: "Small Claims through High Court — fees mindset and filing maps.",
+          body: countryCode === "ZA"
+            ? "Small Claims through High Court — fees mindset and filing maps."
+            : `Apex courts through trial courts in ${countryObj ? countryObj.name : "jurisdiction"} — procedure and rules.`,
         },
       ]
     : [
@@ -33,12 +62,12 @@ export function HomeNextSteps() {
         {
           href: "/directory",
           title: "Where do I go?",
-          body: "Courts, CCMA, Legal Aid, regulators — directory gallery.",
+          body: getDirectoryTeaser(),
         },
         {
           href: "/contact",
           title: "System overview / integrate",
-          body: "Not a lawyer — book a product walkthrough or integration chat.",
+          body: "Book a product walkthrough or law firm integration chat.",
         },
       ];
 
