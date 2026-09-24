@@ -29,7 +29,16 @@ export default function SourcesPage() {
   useEffect(() => {
     triggerPull(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [countryFilter]);
+
+  // Available sources filtered by active country
+  const availableSources = externalSources.filter((s) => {
+    if (countryFilter && countryFilter !== "all") {
+      const target = countryFilter.toUpperCase();
+      return s.countryCode === target || s.countryCode === "AU";
+    }
+    return true;
+  });
 
   async function triggerPull(showProgress = true) {
     if (showProgress) {
@@ -159,8 +168,10 @@ export default function SourcesPage() {
               onChange={(e) => setSelectedSource(e.target.value)}
               className="mt-1.5 w-full rounded-xl border border-[#E5EEF5] bg-white px-3 py-2.5 text-xs text-[#112130] outline-none focus:border-[#0C68BE] focus:ring-2 focus:ring-[#0C68BE]/20"
             >
-              <option value="all">🌐 All African Legal Sources &amp; Gazettes ({externalSources.length})</option>
-              {externalSources.map((s) => (
+              <option value="all">
+                🌐 All Sources for {countryFilter === "all" ? "Africa" : countryFilter.toUpperCase()} ({availableSources.length})
+              </option>
+              {availableSources.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name} ({s.country || "Pan-African"})
                 </option>
@@ -241,6 +252,17 @@ export default function SourcesPage() {
           <span className="text-[11px] font-semibold text-[#86929E]">Quick presets:</span>
           <button
             onClick={() => {
+              setCountryFilter("ZA");
+              setSelectedCountry("ZA");
+              setSelectedSource("saflii");
+              setQuery("");
+            }}
+            className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-[#112130] shadow-xs border border-[#E5EEF5] hover:border-[#0C68BE]"
+          >
+            🇿🇦 South Africa (SAFLII / Gov.za)
+          </button>
+          <button
+            onClick={() => {
               setCountryFilter("KE");
               setSelectedCountry("KE");
               setSelectedSource("kenya-law");
@@ -274,8 +296,30 @@ export default function SourcesPage() {
           </button>
           <button
             onClick={() => {
+              setCountryFilter("EG");
+              setSelectedCountry("EG");
+              setSelectedSource("all");
+              setQuery("");
+            }}
+            className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-[#112130] shadow-xs border border-[#E5EEF5] hover:border-[#0C68BE]"
+          >
+            🇪🇬 Egypt Official Gazette
+          </button>
+          <button
+            onClick={() => {
+              setCountryFilter("BW");
+              setSelectedCountry("BW");
+              setSelectedSource("all");
+              setQuery("");
+            }}
+            className="rounded-full bg-white px-2.5 py-1 text-[11px] font-medium text-[#112130] shadow-xs border border-[#E5EEF5] hover:border-[#0C68BE]"
+          >
+            🇧🇼 Botswana Gazette &amp; Apex
+          </button>
+          <button
+            onClick={() => {
               setCountryFilter("AU");
-              setSelectedCountry("all");
+              setSelectedCountry("AU");
               setSelectedSource("all");
               setQuery("afcfta");
             }}
@@ -432,15 +476,31 @@ export default function SourcesPage() {
 
       {/* Sources Directory Grid */}
       <section className="mt-16 border-t border-[#E5EEF5] pt-12">
-        <h2 className="font-display text-2xl font-semibold text-[#0B151F]">
-          Connected Pan-African Sources ({externalSources.length})
-        </h2>
-        <p className="mt-1 text-xs text-[#677480]">
-          Verified institutional sources, official gazette printers, and legal information institutes.
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 className="font-display text-2xl font-semibold text-[#0B151F]">
+              Connected Legal Sources {countryFilter === "all" ? `(All Africa: ${externalSources.length})` : `for ${countryFilter.toUpperCase()} (${availableSources.length})`}
+            </h2>
+            <p className="mt-1 text-xs text-[#677480]">
+              Verified institutional sources, official gazette printers, and legal information institutes.
+            </p>
+          </div>
+          {countryFilter !== "all" && (
+            <button
+              onClick={() => {
+                setCountryFilter("all");
+                setSelectedCountry("all");
+                setSelectedSource("all");
+              }}
+              className="rounded-xl border border-[#E5EEF5] bg-white px-3 py-1.5 text-xs font-semibold text-[#0C68BE] hover:bg-[#F5F8FB]"
+            >
+              Show All African Sources ({externalSources.length})
+            </button>
+          )}
+        </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {externalSources.map((s) => (
+          {availableSources.map((s) => (
             <div key={s.id} className="rounded-2xl border border-[#E5EEF5] bg-white p-5 shadow-xs">
               <div className="flex items-center justify-between gap-2">
                 <span className="rounded-full bg-[#F5F8FB] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#0C68BE]">

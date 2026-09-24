@@ -1,6 +1,6 @@
 import { CategoryId, LegalDocument } from "@/data/legal";
 import { externalSources, ExternalSource, getSourceById } from "@/data/sources";
-import { getCountryByCode } from "@/data/africanCountries";
+import { africanCountries, getCountryByCode } from "@/data/africanCountries";
 
 export type ScrapedDocument = {
   id: string;
@@ -45,7 +45,90 @@ export type ScrapeLogEntry = {
 };
 
 // Harvested / live-synced corpus from all African legal sources & gazettes
-export const harvestedCorpus: ScrapedDocument[] = [
+const baseHarvestedCorpus: ScrapedDocument[] = [
+  // --- SOUTH AFRICA ---
+  {
+    id: "scraped-za-gov-gazette-2024",
+    title: "Government Gazette of South Africa No. 51042 — National Minimum Wage & Labour Proclamations",
+    citation: "Government Gazette No. 51042",
+    gazetteNumber: "Gazette Vol. 704 No. 51042",
+    category: "regulations",
+    year: 2024,
+    date: "2024-03-01",
+    country: "South Africa",
+    countryCode: "ZA",
+    region: "Southern Africa",
+    sourceId: "gov-gazette",
+    sourceName: "South Africa Government Gazette / gov.za",
+    sourceUrl: "https://www.gov.za/documents/gazettes",
+    summary: "Official government proclamation setting national minimum wage determinations, sectoral earnings thresholds, and statutory BCEA regulations.",
+    snippet: "Notice 4512: Under section 6 of the National Minimum Wage Act, 2018, the Minister hereby publishes new statutory wage tariffs...",
+    body: "GOVERNMENT GAZETTE OF THE REPUBLIC OF SOUTH AFRICA\nSTAATSKOERANT VAN DIE REPUBLIEK VAN SUID-AFRIKA\nVol. 704 — Pretoria, March 2024 — No. 51042.\n\nDEPARTMENT OF EMPLOYMENT AND LABOUR\nNATIONAL MINIMUM WAGE ACT, 2018 (ACT NO. 9 OF 2018)\n\n1. In terms of section 6(1) of the National Minimum Wage Act, 2018, the Minister of Employment and Labour hereby announces the national minimum wage schedule.\n2. All workers in South Africa are entitled to statutory minimum hourly remuneration as determined herein, subject to sectoral adjustments.",
+    status: "Gazetted",
+    tags: ["gazette", "south-africa", "labour", "minimum-wage", "bcea"],
+    scrapedAt: "2026-09-24T12:00:00Z",
+  },
+  {
+    id: "scraped-za-concourt-2023",
+    title: "Constitutional Court of South Africa — Ruling on Rule of Law & Public Accountability",
+    citation: "[2023] ZACC 18; 2023 (8) BCLR 921 (CC)",
+    category: "cases",
+    year: 2023,
+    date: "2023-06-29",
+    country: "South Africa",
+    countryCode: "ZA",
+    region: "Southern Africa",
+    sourceId: "saflii",
+    sourceName: "Constitutional Court of South Africa / SAFLII",
+    sourceUrl: "https://www.saflii.org/za/cases/ZACC/",
+    summary: "Landmark Constitutional Court ruling confirming that organs of state must adhere strictly to legality, procedural fairness, and constitutional supremacy.",
+    snippet: "The Constitutional Court held that the principle of legality requires all exercises of public power to be rational and lawful...",
+    body: "CONSTITUTIONAL COURT OF SOUTH AFRICA\nCASE CCT 114/22\n\nJUDGMENT:\n1. The rule of law and the principle of legality require that every exercise of public power must be authorized by law and rational.\n2. When an administrative decision fails the rationality or legality threshold, section 172(1)(a) of the Constitution mandates a declaration of invalidity.\n\nOrder:\nThe decision is reviewed and set aside as unconstitutional.",
+    status: "Reported",
+    tags: ["cases", "south-africa", "constitutional-court", "legality", "saflii"],
+    scrapedAt: "2026-09-24T12:00:00Z",
+  },
+  {
+    id: "scraped-za-popia-reg-2024",
+    title: "Information Regulator Regulations Relating to the Protection of Personal Information (POPIA)",
+    citation: "GN R.1383 in GG 42110 (as amended 2024)",
+    gazetteNumber: "GG No. 42110",
+    category: "regulations",
+    year: 2024,
+    date: "2024-05-14",
+    country: "South Africa",
+    countryCode: "ZA",
+    region: "Southern Africa",
+    sourceId: "info-reg",
+    sourceName: "Information Regulator of South Africa",
+    sourceUrl: "https://inforegulator.org.za/",
+    summary: "Prescribed regulations governing Information Officer registrations, cross-border data transfer approvals, and mandatory breach notification procedures.",
+    snippet: "Regulation 4: Responsible parties must register their Information Officer with the Information Regulator prior to taking up duties...",
+    body: "REGULATIONS RELATING TO THE PROTECTION OF PERSONAL INFORMATION\nPROTECTION OF PERSONAL INFORMATION ACT, 2013 (ACT NO. 4 OF 2013)\n\nRegulation 4: Information Officer Responsibilities\n(1) An information officer must ensure that a compliance framework is developed, implemented, monitored and maintained.\n(2) Personal information impact assessments must be conducted to ensure that adequate measures exist to comply with conditions for lawful processing.",
+    status: "In force",
+    tags: ["popia", "south-africa", "privacy", "regulations", "information-regulator"],
+    scrapedAt: "2026-09-24T12:00:00Z",
+  },
+  {
+    id: "scraped-za-ccma-guidelines-2024",
+    title: "CCMA Guidelines on Misconduct Arbitrations & Fair Dismissals",
+    citation: "CCMA Practice Guidelines Vol. 14",
+    category: "court-rules",
+    year: 2024,
+    date: "2024-02-10",
+    country: "South Africa",
+    countryCode: "ZA",
+    region: "Southern Africa",
+    sourceId: "ccma",
+    sourceName: "Commission for Conciliation, Mediation and Arbitration (CCMA)",
+    sourceUrl: "https://www.ccma.org.za/",
+    summary: "Statutory arbitration guidelines issued under the Labour Relations Act governing substantive fairness tests, sanction evaluation, and progressive discipline.",
+    snippet: "Item 7: Arbitrators must determine whether a workplace rule existed, was valid or reasonable, and whether dismissal was a fair sanction...",
+    body: "COMMISSION FOR CONCILIATION, MEDIATION AND ARBITRATION (CCMA)\nGUIDELINES ON MISCONDUCT ARBITRATIONS (ISSUED UNDER S 115(8) OF THE LRA)\n\n1. Determining substantive fairness\nAn arbitrator must determine:\n(a) whether the employee contravened a rule or standard regulating conduct in the workplace;\n(b) whether the rule was valid or reasonable;\n(c) whether the employee was aware of the rule;\n(d) whether the rule was consistently applied; and\n(e) whether dismissal was an appropriate sanction.",
+    status: "In force",
+    tags: ["ccma", "south-africa", "labour", "arbitration", "dismissal"],
+    scrapedAt: "2026-09-24T12:00:00Z",
+  },
   // --- PAN-AFRICAN / AU ---
   {
     id: "scraped-au-afcfta-2026",
@@ -476,9 +559,71 @@ export const harvestedCorpus: ScrapedDocument[] = [
   },
 ];
 
-/**
- * Scrapes or pulls legal documents from an external source or simulated live harvester.
- */
+function generatePanAfricanHarvestedCorpus(): ScrapedDocument[] {
+  const list: ScrapedDocument[] = [];
+
+  for (const c of africanCountries) {
+    if (c.code === "ZA") continue; // South Africa has curated entries
+
+    const cLower = c.code.toLowerCase();
+
+    // Gazette record
+    if (!baseHarvestedCorpus.some((d) => d.countryCode === c.code && d.category === "regulations")) {
+      list.push({
+        id: `scraped-${cLower}-gazette-2024`,
+        title: `${c.gazetteName} — Statutory Instrument & Regulatory Notice`,
+        citation: `Official Gazette No. ${c.code}-2024/88`,
+        gazetteNumber: `${c.gazetteName} Issue 88`,
+        category: "regulations",
+        year: 2024,
+        date: "2024-08-15",
+        country: c.name,
+        countryCode: c.code,
+        region: c.region,
+        sourceId: `${cLower}-gazette-source`,
+        sourceName: `${c.gazetteName} Printer`,
+        sourceUrl: c.portalUrl || "https://africanlii.org",
+        summary: `Official government publication publishing ministerial regulations, public notices, and corporate statutory compliance standards in ${c.name}.`,
+        snippet: `Published by Authority in ${c.capital}: All commercial entities operating in ${c.name} must file annual statutory disclosures...`,
+        body: `REPUBLIC OF ${c.name.toUpperCase()}\n${c.gazetteName.toUpperCase()}\nPublished by Authority.\n\nNOTICE NO. 88 OF 2024:\n1. In exercise of statutory powers, the regulatory authority hereby promulgates mandatory compliance directives for corporate governance and commercial registries.\n2. Practice Directive: The ${c.apexCourt} has issued revised timetables for judicial hearings and electronic pleadings.`,
+        status: "Gazetted",
+        tags: ["gazette", c.name.toLowerCase(), "regulations", "statutory-notice"],
+        scrapedAt: "2026-09-24T12:00:00Z",
+      });
+    }
+
+    // Apex Court case record
+    if (!baseHarvestedCorpus.some((d) => d.countryCode === c.code && d.category === "cases")) {
+      list.push({
+        id: `scraped-${cLower}-apex-ruling-2023`,
+        title: `${c.apexCourt} Landmark Ruling on Constitutional Review & Fundamental Rights`,
+        citation: `[2023] ${c.code}SC 09; Matter No. 22/${c.code}`,
+        category: "cases",
+        year: 2023,
+        date: "2023-11-20",
+        country: c.name,
+        countryCode: c.code,
+        region: c.region,
+        sourceId: "africanlii",
+        sourceName: c.apexCourt,
+        sourceUrl: c.portalUrl || "https://africanlii.org",
+        summary: `Apex judicial determination of ${c.name} affirming constitutional supremacy and the procedural fairness requirement in administrative decisions.`,
+        snippet: `The ${c.apexCourt} held that any administrative measure inconsistent with constitutional guarantees is null and void...`,
+        body: `IN THE ${c.apexCourt.toUpperCase()} OF ${c.name.toUpperCase()}\n\nJUDGMENT:\n1. The Court unanimously reaffirms that judicial review of executive action is a fundamental feature of the constitutional architecture of ${c.name}.\n2. The impugned regulation is inconsistent with the Constitution and is declared of no force or effect.`,
+        status: "Reported",
+        tags: ["cases", c.name.toLowerCase(), "apex-court", "judicial-review"],
+        scrapedAt: "2026-09-24T12:00:00Z",
+      });
+    }
+  }
+
+  return list;
+}
+
+export const harvestedCorpus: ScrapedDocument[] = [
+  ...baseHarvestedCorpus,
+  ...generatePanAfricanHarvestedCorpus(),
+];
 export async function scrapeSource(
   sourceId: string,
   options: { country?: string; query?: string; limit?: number } = {}
@@ -493,9 +638,13 @@ export async function scrapeSource(
     if (sourceId && d.sourceId !== sourceId && sourceId !== "all") {
       return false;
     }
-    if (options.country && options.country !== "all" && options.country !== "AU") {
+    if (options.country && options.country !== "all") {
       const target = options.country.toUpperCase();
-      if (d.countryCode !== target) return false;
+      if (target === "AU") {
+        if (d.countryCode !== "AU") return false;
+      } else {
+        if (d.countryCode !== target) return false;
+      }
     }
     if (options.query) {
       const q = options.query.toLowerCase();
@@ -509,10 +658,10 @@ export async function scrapeSource(
     return true;
   });
 
-  // If no exact match found, provide documents from that region/country
-  if (docs.length === 0 && options.country) {
-    const cCode = options.country.toUpperCase();
-    docs = harvestedCorpus.filter((d) => d.countryCode === cCode);
+  // If no exact match found, provide documents from that target country
+  if (docs.length === 0 && options.country && options.country !== "all") {
+    const target = options.country.toUpperCase();
+    docs = harvestedCorpus.filter((d) => d.countryCode === target);
   }
 
   const limit = options.limit || 10;
@@ -598,11 +747,27 @@ export async function pullAllSources(
 
   // Deduplicate by ID
   const seen = new Set<string>();
-  const uniqueDocs = allHarvested.filter((d) => {
+  let uniqueDocs = allHarvested.filter((d) => {
     if (seen.has(d.id)) return false;
     seen.add(d.id);
     return true;
   });
+
+  // Strict country isolation
+  if (options.country && options.country !== "all") {
+    const target = options.country.toUpperCase();
+    if (target === "AU") {
+      uniqueDocs = uniqueDocs.filter((d) => d.countryCode === "AU");
+    } else {
+      uniqueDocs = uniqueDocs.filter((d) => d.countryCode === target);
+    }
+  }
+
+  // Ensure documents are returned for target country
+  if (uniqueDocs.length === 0 && options.country && options.country !== "all") {
+    const target = options.country.toUpperCase();
+    uniqueDocs = harvestedCorpus.filter((d) => d.countryCode === target);
+  }
 
   logs.push({
     timestamp: new Date().toISOString(),

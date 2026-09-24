@@ -3,14 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { categories } from "@/data/legal";
+import { useAuth } from "@/context/AuthContext";
 
 export function CategoryGrid() {
+  const { selectedCountry } = useAuth();
+  const countryParam = selectedCountry && selectedCountry !== "all" ? `&country=${selectedCountry}` : "";
+
   return (
     <div className="mx-auto grid w-full max-w-4xl grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
       {categories.map((c) => (
         <Link
           key={c.id}
-          href={`/s?c=${c.id}&sort=year-desc&limit=20&page=1`}
+          href={`/s?c=${c.id}${countryParam}&sort=year-desc&limit=20&page=1`}
           className="group flex flex-col items-center gap-2.5 rounded-2xl border border-[#E5EEF5] bg-white/95 px-2 py-5 shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-[#0C68BE]/40 hover:shadow-md sm:px-3"
         >
           <span
