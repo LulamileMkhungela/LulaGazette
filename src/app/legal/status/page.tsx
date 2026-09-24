@@ -19,6 +19,7 @@ export default function StatusPage() {
           <li>Curated SA Acts, cases, rules, regulations, forms and provincial samples</li>
           <li>Search with filters, full document reader, guides, directory and templates</li>
           <li>Individual and lawyer modes so the same product serves both audiences</li>
+          <li>Public data coverage page showing local corpus counts, source roles, and known gaps</li>
         </ul>
 
         <h2 className="font-display text-xl text-[#0B151F]">Data</h2>

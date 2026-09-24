@@ -76,6 +76,7 @@ export function Footer() {
                 { href: "/terms", label: "Terms of service" },
                 { href: "/privacy", label: "Privacy Policy" },
                 { href: "/legal/status", label: "Platform status" },
+                { href: "/coverage", label: "Data coverage" },
               ]}
             />
           </div>
