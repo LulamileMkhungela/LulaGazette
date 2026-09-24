@@ -138,6 +138,7 @@ lulagazette/
 | `/guides`, `/templates`, `/directory`, `/courts` | Audience tools |
 | `/lawyers` | Matter notes workspace (device-local) |
 | `/pricing`, `/contact`, `/legal/status` | Product & legal |
+| `/coverage` | Data coverage, source roles, freshness limits and known gaps |
 
 ---
 
