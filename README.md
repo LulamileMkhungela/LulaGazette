@@ -2,7 +2,7 @@
 
 **Pan-African & South African legal intelligence — for individuals, lawyers, and scholars across all 54 African countries.**
 
-Built by **[Lulamile Mkhungela](mailto:mkhungela.l@gmail.com)** in Johannesburg.
+Built by **Lulamile Mkhungela** in Johannesburg.
 
 LulaGazette is an active legal intelligence platform: a central gateway for official gazettes, Acts of Parliament, landmark apex court rulings, court forms, procedural rules, regulations, multi-source live data scrapers, plain-language guides, drafting templates, and an in-app document reader. It covers **all 54 sovereign African countries** and regional frameworks (African Union, ECOWAS, EAC, SADC, OHADA). It is **not a law firm**. The founder is **not a lawyer**. For advice on a live matter, instruct an admitted attorney or advocate in the relevant jurisdiction.
 
@@ -28,7 +28,6 @@ LulaGazette is an active legal intelligence platform: a central gateway for offi
 - [Tech stack](#tech-stack)
 - [Contributing](#contributing)
 - [Licence](#licence)
-- [Contact](#contact)
 - [Disclaimer](#disclaimer)
 
 ---
@@ -147,17 +146,6 @@ npm run scrape
 
 - © 2026 **Lulamile Mkhungela**
 - Local evaluation and non-production demos are allowed under the licence text.
-
----
-
-## Contact
-
-| | |
-|--|--|
-| **Founder** | Lulamile Mkhungela |
-| **Email** | [mkhungela.l@gmail.com](mailto:mkhungela.l@gmail.com) |
-| **Phone** | 083 719 5064 |
-| **Address** | 41 Juta Street, Braamfontein, Johannesburg |
 
 ---
 

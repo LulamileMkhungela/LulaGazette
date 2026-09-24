@@ -5,7 +5,7 @@ Thanks for your interest. This project is owned and steered by **Lulamile Mkhung
 ## Before you start
 
 - Read [README.md](./README.md) and [LICENSE](./LICENSE).
-- Email **mkhungela.l@gmail.com** for anything beyond a small fix, or open a discussion/issue if the remote host allows it.
+- Open an issue or discussion for anything beyond a small fix.
 
 ## Development
 
@@ -20,7 +20,7 @@ npm run lint
 
 1. **South African context** — content, labels, courts, and examples stay RSA-focused.  
 2. **No free AI wall** — AI features belong under Pricing packages, not the default free library.  
-3. **Contact details** — address, phone, and email only on Contact Us (and README/docs), not site-wide.  
+3. **Contact details** — address, phone, and email only on Contact Us in the product UI, not site-wide.  
 4. **Audience modes** — Individual vs Lawyer must keep distinct nav/datasets where designed.  
 5. **No unlawful scraping** guidance — don’t add code or docs that encourage ripping paywalled law databases.  
 6. **Brand** — product name is **LulaGazette**, not a third-party brand.
