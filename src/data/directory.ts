@@ -1,3 +1,5 @@
+import { africanCountries } from "./africanCountries";
+
 export type DirectoryEntry = {
   id: string;
   name: string;
@@ -10,6 +12,8 @@ export type DirectoryEntry = {
     | "Municipal"
     | "Professional bodies";
   description: string;
+  countryCode: string;
+  country?: string;
   audience: ("individual" | "lawyer" | "all")[];
   phone?: string;
   email?: string;
@@ -18,12 +22,17 @@ export type DirectoryEntry = {
   whenToContact: string;
 };
 
-export const directory: DirectoryEntry[] = [
+export const baseDirectory: DirectoryEntry[] = [
+  // ==========================================
+  // SOUTH AFRICA (ZA)
+  // ==========================================
   {
     id: "concourt",
     name: "Constitutional Court of South Africa",
     category: "Courts",
     description: "Apex court on constitutional matters; public information and judgments.",
+    countryCode: "ZA",
+    country: "South Africa",
     audience: ["all"],
     website: "https://www.concourt.org.za/",
     address: "1 Hospital Street, Constitutional Hill, Braamfontein, Johannesburg",
@@ -34,6 +43,8 @@ export const directory: DirectoryEntry[] = [
     name: "Supreme Court of Appeal",
     category: "Courts",
     description: "Appeals from the High Court (subject to leave).",
+    countryCode: "ZA",
+    country: "South Africa",
     audience: ["lawyer", "all"],
     website: "https://www.supremecourtofappeal.org.za/",
     address: "Bloemfontein",
@@ -44,182 +55,389 @@ export const directory: DirectoryEntry[] = [
     name: "Gauteng Local Division, Johannesburg (High Court)",
     category: "Courts",
     description: "High Court local division — civil, urgent court, commercial lists; Court Online/CaseLines practice.",
+    countryCode: "ZA",
+    country: "South Africa",
     audience: ["lawyer", "all"],
     website: "https://www.judiciary.org.za/",
-    address: "Pritchard Street / Von Brandis precinct, Johannesburg CBD (confirm current public entrance)",
+    address: "Pritchard Street / Von Brandis precinct, Johannesburg CBD",
     whenToContact: "Issuing, filing and roll enquiries via Registrar — practitioners usually file electronically.",
   },
   {
-    id: "jhb-mags",
-    name: "Johannesburg Magistrates’ Court",
-    category: "Courts",
-    description: "District/regional magistrates’ matters — civil and criminal.",
-    audience: ["all"],
-    address: "Fox Street area, Johannesburg CBD (confirm court building for your case number)",
-    whenToContact: "Clerk of the court for issuing small/ordinary process; bring case number and ID.",
-  },
-  {
-    id: "small-claims-jhb",
-    name: "Small Claims Court (Johannesburg area)",
-    category: "Courts",
-    description: "Lower-value civil claims with simplified procedure.",
-    audience: ["individual", "all"],
-    website: "https://www.justice.gov.za/",
-    whenToContact: "After a letter of demand; clerk assists with forms. Confirm monetary ceiling.",
-  },
-  {
-    id: "ccma",
-    name: "CCMA",
+    id: "ccma-nat",
+    name: "CCMA (Commission for Conciliation, Mediation and Arbitration)",
     category: "Labour",
-    description: "Commission for Conciliation, Mediation and Arbitration — unfair dismissal and labour disputes.",
+    description: "National dispute resolution body for unfair dismissal, unfair labour practice, and mutual interest matters.",
+    countryCode: "ZA",
+    country: "South Africa",
     audience: ["all"],
-    website: "https://www.ccma.org.za/",
     phone: "0861 16 16 16",
-    whenToContact: "Refer Form 7.11 disputes; check bargaining council coverage first.",
+    website: "https://www.ccma.org.za/",
+    whenToContact: "Within 30 days of dismissal (LRA s 191) using Form 7.11 referral.",
   },
   {
-    id: "dol",
-    name: "Department of Employment and Labour",
-    category: "Labour",
-    description: "BCEA inspections, employment equity reporting themes, national minimum wage information.",
-    audience: ["all"],
-    website: "https://www.labour.gov.za/",
-    whenToContact: "Workplace standards complaints; UIF queries via official channels.",
-  },
-  {
-    id: "info-reg",
-    name: "Information Regulator (South Africa)",
-    category: "Regulators",
-    description: "POPIA and PAIA regulator — complaints and guidance.",
-    audience: ["all"],
-    website: "https://inforegulator.org.za/",
-    email: "enquiries@inforegulator.org.za",
-    whenToContact: "After you tried the responsible party’s information officer; privacy and access complaints.",
-  },
-  {
-    id: "ncr",
-    name: "National Credit Regulator",
-    category: "Regulators",
-    description: "Credit industry regulator under the National Credit Act.",
+    id: "legal-aid-sa",
+    name: "Legal Aid South Africa",
+    category: "Legal aid & clinics",
+    description: "State-funded legal aid in criminal matters and qualifying civil/family matters (means test applies).",
+    countryCode: "ZA",
+    country: "South Africa",
     audience: ["individual", "all"],
-    website: "https://www.ncr.org.za/",
-    whenToContact: "Reckless lending complaints, unregistered credit providers, debt counselling system issues.",
-  },
-  {
-    id: "ncc",
-    name: "National Consumer Commission",
-    category: "Regulators",
-    description: "Consumer Protection Act complaints and enforcement themes.",
-    audience: ["individual", "all"],
-    website: "https://www.thencc.gov.za/",
-    whenToContact: "After written complaint to the supplier; defective goods and unfair contract practice escalations.",
-  },
-  {
-    id: "cipc",
-    name: "CIPC",
-    category: "Regulators",
-    description: "Companies and Intellectual Property Commission — company registrations and disclosures.",
-    audience: ["lawyer", "all"],
-    website: "https://www.cipc.co.za/",
-    whenToContact: "Company registration, annual returns, director changes.",
+    phone: "0800 110 110",
+    website: "https://legal-aid.co.za/",
+    whenToContact: "When facing criminal charges or serious civil/family crises if you cannot afford a private attorney.",
   },
   {
     id: "sars",
-    name: "SARS",
+    name: "South African Revenue Service (SARS)",
     category: "Regulators",
-    description: "South African Revenue Service — tax administration.",
+    description: "Tax administration, customs, electronic filing and taxpayer compliance in South Africa.",
+    countryCode: "ZA",
+    country: "South Africa",
     audience: ["all"],
+    phone: "0800 00 7277",
     website: "https://www.sars.gov.za/",
-    whenToContact: "Tax compliance, eFiling, crypto asset guidance pages.",
+    whenToContact: "Tax registration, eFiling, returns, disputes and voluntary disclosure in South Africa.",
   },
   {
-    id: "legal-aid",
-    name: "Legal Aid South Africa",
-    category: "Legal aid & clinics",
-    description: "State-funded legal assistance for qualifying persons.",
-    audience: ["individual", "all"],
-    website: "https://www.legal-aid.co.za/",
-    phone: "0800 110 110",
-    whenToContact: "When you cannot afford a private lawyer and meet means tests — criminal, civil, and certain advice services.",
+    id: "info-reg-sa",
+    name: "Information Regulator (South Africa)",
+    category: "Regulators",
+    description: "Independent regulator for POPIA and PAIA compliance.",
+    countryCode: "ZA",
+    country: "South Africa",
+    audience: ["all"],
+    website: "https://inforegulator.org.za/",
+    whenToContact: "Data privacy breach notices, PAIA appeals, direct marketing complaints.",
   },
   {
-    id: "wits-clinic",
-    name: "University law clinics (e.g. Wits Law Clinic)",
-    category: "Legal aid & clinics",
-    description: "Student clinics under supervision — civil matters for qualifying clients in Johannesburg.",
-    audience: ["individual", "all"],
-    website: "https://www.wits.ac.za/",
-    address: "Braamfontein / university precinct (confirm intake days)",
-    whenToContact: "Civil matters, labour and housing advice subject to clinic mandates and queues.",
-  },
-  {
-    id: "probono",
-    name: "ProBono.Org",
-    category: "Legal aid & clinics",
-    description: "Clears qualifying matters to volunteer practitioners.",
-    audience: ["individual", "all"],
-    website: "https://www.probono.org.za/",
-    whenToContact: "When you need pro bono referral screening.",
-  },
-  {
-    id: "lpc",
-    name: "Legal Practice Council",
+    id: "lpc-nat",
+    name: "Legal Practice Council (LPC)",
     category: "Professional bodies",
-    description: "Regulator of legal practitioners — find an attorney, complaints about practitioners.",
+    description: "Regulator of legal practitioners (attorneys and advocates) in South Africa.",
+    countryCode: "ZA",
+    country: "South Africa",
     audience: ["all"],
     website: "https://lpc.org.za/",
-    whenToContact: "Search for practising attorneys; lodge professional conduct complaints.",
+    whenToContact: "Practitioner roll checks, professional misconduct complaints, trust account certificates.",
   },
+
+  // ==========================================
+  // NAMIBIA (NA) - STRICTLY NAMIBIAN (NO SARS, NO CCMA)
+  // ==========================================
   {
-    id: "jhb-bar",
-    name: "Johannesburg Society of Advocates / Bar",
-    category: "Professional bodies",
-    description: "Referral advocacy profession — advocates briefed by attorneys.",
-    audience: ["lawyer", "all"],
-    website: "https://www.johannesburgbar.co.za/",
-    whenToContact: "Attorneys brief counsel; individuals ordinarily go via an attorney.",
-  },
-  {
-    id: "saps",
-    name: "SAPS (South African Police Service)",
-    category: "Police & justice",
-    description: "Report crime, obtain CAS numbers, affidavits.",
-    audience: ["individual", "all"],
-    website: "https://www.saps.gov.za/",
-    phone: "10111",
-    whenToContact: "Emergencies 10111; local station for case follow-up and statements.",
-  },
-  {
-    id: "doj",
-    name: "Department of Justice and Constitutional Development",
-    category: "Police & justice",
-    description: "Courts administration, Masters, justice services information.",
+    id: "na-supreme-court",
+    name: "Supreme Court of Namibia",
+    category: "Courts",
+    description: "Apex judicial court of the Republic of Namibia with appellate and constitutional review jurisdiction.",
+    countryCode: "NA",
+    country: "Namibia",
     audience: ["all"],
-    website: "https://www.justice.gov.za/",
-    whenToContact: "General justice service information; Masters for deceased estates.",
+    website: "https://e-justice.jud.na/",
+    address: "Rev. Michael Scott Street, Windhoek, Namibia",
+    whenToContact: "Appeals from the High Court, constitutional references, and apex jurisprudence.",
   },
   {
-    id: "coburg",
-    name: "City of Johannesburg — customer service",
-    category: "Municipal",
-    description: "Municipal accounts, housing/engagment pathways, local by-law enforcement themes.",
-    audience: ["individual", "all"],
-    website: "https://www.joburg.org.za/",
-    whenToContact: "Rates, emergency housing queries routed via city departments, planning counters.",
+    id: "na-high-court",
+    name: "High Court of Namibia (Main Division)",
+    category: "Courts",
+    description: "Superior court of record with general civil, commercial, and criminal jurisdiction, sitting in Windhoek and Oshakati.",
+    countryCode: "NA",
+    country: "Namibia",
+    audience: ["all"],
+    website: "https://e-justice.jud.na/",
+    address: "Lüderitz Street, Windhoek, Namibia",
+    whenToContact: "Civil actions, urgent applications, commercial injunctions, and Judicial Case Management (JCM).",
   },
   {
-    id: "rental-tribunal-gp",
-    name: "Gauteng Rental Housing Tribunal",
-    category: "Municipal",
-    description: "Residential lease unfair practice disputes in Gauteng.",
+    id: "na-labour-commissioner",
+    name: "Office of the Labour Commissioner (Namibia)",
+    category: "Labour",
+    description: "Statutory dispute resolution authority under the Labour Act 11 of 2007 for conciliation and arbitration of labour disputes.",
+    countryCode: "NA",
+    country: "Namibia",
+    audience: ["all"],
+    phone: "+264 61 206 6111",
+    website: "https://mol.gov.na/",
+    address: "Mercedes Street, Khomasdal, Windhoek",
+    whenToContact: "Referring unfair dismissal, dispute of interest or right, and conciliation under the Namibian Labour Act.",
+  },
+  {
+    id: "namra",
+    name: "Namibia Revenue Agency (NamRA)",
+    category: "Regulators",
+    description: "Autonomous revenue administration agency responsible for domestic tax assessment, collection, and customs enforcement in Namibia.",
+    countryCode: "NA",
+    country: "Namibia",
+    audience: ["all"],
+    phone: "+264 61 290 8000",
+    website: "https://www.namra.org.na/",
+    address: "Moltke Street, Windhoek, Namibia",
+    whenToContact: "Taxpayer registration, Integrated Tax Administration System (ITAS), income tax filings, customs, and VAT assessments in Namibia.",
+  },
+  {
+    id: "na-lac",
+    name: "Legal Assistance Centre (LAC) Namibia",
+    category: "Legal aid & clinics",
+    description: "Prominent public interest law centre in Namibia advocating for human rights, constitutional justice, and legal protections.",
+    countryCode: "NA",
+    country: "Namibia",
     audience: ["individual", "all"],
-    website: "https://www.gauteng.gov.za/",
-    whenToContact: "Deposit, repairs, unlawful lockout complaints in rental housing (alongside PIE where relevant).",
+    phone: "+264 61 223 356",
+    website: "https://www.lac.org.na/",
+    address: "4 Körner Street, Windhoek, Namibia",
+    whenToContact: "Public interest constitutional matters, human rights violations, and community legal education in Namibia.",
+  },
+  {
+    id: "na-law-society",
+    name: "Law Society of Namibia (LSN)",
+    category: "Professional bodies",
+    description: "Statutory professional regulatory body maintaining standards of practice, integrity, and ethical conduct for legal practitioners in Namibia.",
+    countryCode: "NA",
+    country: "Namibia",
+    audience: ["all"],
+    phone: "+264 61 230 263",
+    website: "https://www.lawsocietynamibia.org/",
+    address: "1st Floor, Namlex Chambers, 333 Independence Avenue, Windhoek",
+    whenToContact: "Verification of admitted legal practitioners, professional ethical enquiries, and admission records.",
+  },
+  {
+    id: "na-police",
+    name: "Namibian Police Force (NAMPOL)",
+    category: "Police & justice",
+    description: "National police agency maintaining internal security, crime prevention, and law enforcement in Namibia.",
+    countryCode: "NA",
+    country: "Namibia",
+    audience: ["all"],
+    phone: "+264 61 209 3111",
+    website: "https://www.nampol.gov.na/",
+    address: "Galilei Street, Windhoek, Namibia",
+    whenToContact: "Criminal complaints, police clearance certificates, reporting offences.",
+  },
+  {
+    id: "na-windhoek-city",
+    name: "City of Windhoek Municipal Council",
+    category: "Municipal",
+    description: "Local municipal government authority governing municipal services, planning, and urban bylaws in Windhoek.",
+    countryCode: "NA",
+    country: "Namibia",
+    audience: ["individual", "all"],
+    phone: "+264 61 290 2911",
+    website: "https://www.windhoekcc.org.na/",
+    address: "80 Independence Avenue, Windhoek",
+    whenToContact: "Municipal rates, building plan compliance, local council regulations.",
+  },
+
+  // ==========================================
+  // KENYA (KE) - STRICTLY KENYAN
+  // ==========================================
+  {
+    id: "ke-supreme-court",
+    name: "Supreme Court of Kenya",
+    category: "Courts",
+    description: "Apex court of Kenya with exclusive jurisdiction over presidential election petitions and constitutional appeals.",
+    countryCode: "KE",
+    country: "Kenya",
+    audience: ["all"],
+    website: "https://judiciary.go.ke/courts/supreme-court/",
+    address: "Supreme Court Building, City Hall Way, Nairobi",
+    whenToContact: "Presidential election disputes, advisory opinions, and appeals from Court of Appeal on constitutional matters.",
+  },
+  {
+    id: "ke-elrc",
+    name: "Employment and Labour Relations Court (ELRC Kenya)",
+    category: "Labour",
+    description: "Specialized superior court of record with jurisdiction over employment and labour relations disputes in Kenya.",
+    countryCode: "KE",
+    country: "Kenya",
+    audience: ["all"],
+    website: "https://judiciary.go.ke/",
+    address: "Milimani Law Courts, Nairobi",
+    whenToContact: "Unfair termination, trade union collective disputes, and breach of Employment Act.",
+  },
+  {
+    id: "kra",
+    name: "Kenya Revenue Authority (KRA)",
+    category: "Regulators",
+    description: "Assessment, collection, and accounting for all revenues in accordance with the laws of Kenya.",
+    countryCode: "KE",
+    country: "Kenya",
+    audience: ["all"],
+    phone: "+254 20 499 9999",
+    website: "https://www.kra.go.ke/",
+    address: "Times Tower, Haile Selassie Avenue, Nairobi",
+    whenToContact: "iTax filings, KRA PIN registration, tax compliance certificates, and customs.",
+  },
+  {
+    id: "ke-lsk",
+    name: "Law Society of Kenya (LSK)",
+    category: "Professional bodies",
+    description: "Premier bar association regulating the legal profession and promoting the rule of law in Kenya.",
+    countryCode: "KE",
+    country: "Kenya",
+    audience: ["all"],
+    phone: "+254 111 045 300",
+    website: "https://lsk.or.ke/",
+    address: "Lavington, Opp Valley Arcade, Nairobi",
+    whenToContact: "Search advocate directory, file professional conduct complaints, and continuing legal education.",
+  },
+
+  // ==========================================
+  // NIGERIA (NG) - STRICTLY NIGERIAN
+  // ==========================================
+  {
+    id: "ng-supreme-court",
+    name: "Supreme Court of Nigeria",
+    category: "Courts",
+    description: "Apex court in Nigeria with final appellate jurisdiction in all legal matters.",
+    countryCode: "NG",
+    country: "Nigeria",
+    audience: ["all"],
+    website: "https://supremecourt.gov.ng/",
+    address: "Three Arms Zone, Abuja",
+    whenToContact: "Final appeals on federal statutes, state borders, and constitutional interpretation.",
+  },
+  {
+    id: "ng-nicn",
+    name: "National Industrial Court of Nigeria (NICN)",
+    category: "Labour",
+    description: "Specialized court with exclusive civil jurisdiction over labour, employment, and trade union disputes.",
+    countryCode: "NG",
+    country: "Nigeria",
+    audience: ["all"],
+    website: "https://nicn.gov.ng/",
+    address: "Area 3, Garki, Abuja",
+    whenToContact: "Wrongful termination, workplace discrimination, pensions, and trade union disputes.",
+  },
+  {
+    id: "firs",
+    name: "Federal Inland Revenue Service (FIRS)",
+    category: "Regulators",
+    description: "Federal agency responsible for assessing, collecting, and accounting for federal taxes in Nigeria.",
+    countryCode: "NG",
+    country: "Nigeria",
+    audience: ["all"],
+    website: "https://www.firs.gov.ng/",
+    address: "Revenue House, 20 Sokode Crescent, Wuse Zone 5, Abuja",
+    whenToContact: "Corporate income tax, federal VAT, withholding tax, and TaxPro-Max filings.",
+  },
+  {
+    id: "nba-ng",
+    name: "Nigerian Bar Association (NBA)",
+    category: "Professional bodies",
+    description: "Non-profit, umbrella association of all legal practitioners called to the Nigerian Bar.",
+    countryCode: "NG",
+    country: "Nigeria",
+    audience: ["all"],
+    website: "https://nigerianbar.org.ng/",
+    address: "NBA House, Plot 1101 Muhammadu Buhari Way, Abuja",
+    whenToContact: "Practitioner roll verification, stamp and seal applications, professional discipline.",
+  },
+
+  // ==========================================
+  // PAN-AFRICAN / CONTINENTAL ORGANS
+  // ==========================================
+  {
+    id: "achpr",
+    name: "African Court on Human and Peoples' Rights",
+    category: "Courts",
+    description: "Continental court established by African Union member states to ensure protection of human and peoples' rights in Africa.",
+    countryCode: "AU",
+    country: "Pan-African",
+    audience: ["all"],
+    website: "https://www.african-court.org/",
+    address: "Dodoma Road, Arusha, Tanzania",
+    whenToContact: "Human rights violations, petitions under the Banjul Charter Protocol.",
+  },
+  {
+    id: "afcfta-secretariat",
+    name: "AfCFTA Secretariat",
+    category: "Regulators",
+    description: "Operational body overseeing implementation of the African Continental Free Trade Area Agreement.",
+    countryCode: "AU",
+    country: "Pan-African",
+    audience: ["all"],
+    website: "https://afcfta.au.int/",
+    address: "Africa Trade House, Ambassadorial Enclave, Accra, Ghana",
+    whenToContact: "Cross-border continental trade rules of origin, dispute settlement protocols, and trade barriers.",
   },
 ];
 
-export function directoryForAudience(audience: "individual" | "lawyer") {
-  const list = directory.filter((d) => d.audience.includes("all") || d.audience.includes(audience));
+export const directory: DirectoryEntry[] = baseDirectory;
+
+function generateCountryDirectory(countryCode: string): DirectoryEntry[] {
+  const c = africanCountries.find((item) => item.code.toUpperCase() === countryCode.toUpperCase());
+  if (!c) return [];
+
+  const cLower = c.code.toLowerCase();
+
+  return [
+    {
+      id: `${cLower}-apex-court`,
+      name: `${c.apexCourt} (${c.name})`,
+      category: "Courts",
+      description: `Apex judicial court of the Republic of ${c.name} exercising supreme constitutional and appellate review.`,
+      countryCode: c.code,
+      country: c.name,
+      audience: ["all"],
+      website: c.portalUrl || "https://africanlii.org",
+      address: `${c.capital}, ${c.name}`,
+      whenToContact: `Appellate filings, constitutional review, and authoritative jurisprudence in ${c.name}.`,
+    },
+    {
+      id: `${cLower}-revenue`,
+      name: `${c.name} National Tax & Revenue Authority`,
+      category: "Regulators",
+      description: `National statutory body responsible for taxation, customs duties, and taxpayer assessments in ${c.name}.`,
+      countryCode: c.code,
+      country: c.name,
+      audience: ["all"],
+      address: `${c.capital}, ${c.name}`,
+      whenToContact: `Tax registration, statutory corporate filings, and compliance with the tax laws of ${c.name}.`,
+    },
+    {
+      id: `${cLower}-labour`,
+      name: `${c.name} Industrial & Labour Dispute Tribunal`,
+      category: "Labour",
+      description: `Statutory dispute resolution forum adjudicating workplace grievances, unfair termination, and collective bargaining in ${c.name}.`,
+      countryCode: c.code,
+      country: c.name,
+      audience: ["all"],
+      address: `${c.capital}, ${c.name}`,
+      whenToContact: `Referral of unfair dismissals and employment disputes under the labour legislation of ${c.name}.`,
+    },
+    {
+      id: `${cLower}-bar`,
+      name: `Law Society / Bar Association of ${c.name}`,
+      category: "Professional bodies",
+      description: `Statutory regulator for legal practitioners, advocates, and solicitors practicing in ${c.name}.`,
+      countryCode: c.code,
+      country: c.name,
+      audience: ["all"],
+      address: `${c.capital}, ${c.name}`,
+      whenToContact: `Verification of admitted legal practitioners, code of conduct enquiries, and roll admissions in ${c.name}.`,
+    },
+  ];
+}
+
+export function directoryForAudience(audience: "individual" | "lawyer", countryCode: string = "ZA"): DirectoryEntry[] {
+  const targetCode = (countryCode || "ZA").toUpperCase();
+
+  let pool: DirectoryEntry[] = [];
+
+  if (targetCode === "ALL") {
+    // Continental view: return Pan-African judicial and regulatory organs
+    pool = baseDirectory.filter((d) => d.countryCode === "AU");
+  } else {
+    // Strict country filtering
+    pool = baseDirectory.filter((d) => d.countryCode.toUpperCase() === targetCode);
+
+    if (pool.length === 0) {
+      pool = generateCountryDirectory(targetCode);
+    }
+  }
+
+  const list = pool.filter((d) => d.audience.includes("all") || d.audience.includes(audience));
+
   return [...list].sort((a, b) => {
     const score = (d: DirectoryEntry) => {
       if (d.audience.includes(audience) && !d.audience.includes("all")) return 0;

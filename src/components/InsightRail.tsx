@@ -3,17 +3,38 @@
 import Link from "next/link";
 import { insightsForAudience } from "@/data/insights";
 import { useAudience } from "@/context/AudienceContext";
+import { useAuth } from "@/context/AuthContext";
+import { getCountryByCode } from "@/data/africanCountries";
 
 export function InsightRail() {
   const { audience, label, isLawyer } = useAudience();
-  const cards = insightsForAudience(audience).slice(0, 10);
+  const { selectedCountry } = useAuth();
+  const cards = insightsForAudience(audience, selectedCountry).slice(0, 10);
+  const activeCountryObj = getCountryByCode(selectedCountry);
+
+  const countryDisplayName =
+    selectedCountry === "all"
+      ? "Pan-Africa"
+      : activeCountryObj
+      ? `${activeCountryObj.flag} ${activeCountryObj.name}`
+      : "Selected Jurisdiction";
 
   return (
     <div className="w-full max-w-5xl">
-      <p className="mb-2 text-center text-[11px] font-medium text-[#86929E] sm:text-left">
-        Spotlight for <span className={isLawyer ? "font-semibold text-violet-700" : "font-semibold text-[#0C68BE]"}>{label.toLowerCase()}</span>
-        {isLawyer ? " — authorities & procedure first" : " — plain explainers & everyday law"}
-      </p>
+      <div className="mb-2 flex flex-wrap items-center justify-between gap-2 px-1">
+        <p className="text-[11px] font-medium text-[#86929E]">
+          Spotlight for{" "}
+          <span className={isLawyer ? "font-semibold text-violet-700" : "font-semibold text-[#0C68BE]"}>
+            {label.toLowerCase()}
+          </span>{" "}
+          in <span className="font-semibold text-[#112130]">{countryDisplayName}</span>
+          {isLawyer ? " — authorities & local procedure" : " — key legislation & everyday rights"}
+        </p>
+        <span className="rounded-full bg-[#F5F8FB] px-2.5 py-0.5 text-[10px] font-semibold text-[#0C68BE] border border-[#E5EEF5]">
+          {selectedCountry === "all" ? "🌍 Pan-African Scope" : `Strict ${activeCountryObj?.name || selectedCountry} Scope`}
+        </span>
+      </div>
+
       <div
         className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-3 pt-1 scroll-smooth"
         style={{ scrollbarWidth: "thin" }}
@@ -28,9 +49,16 @@ export function InsightRail() {
               <span className="rounded-full bg-[#0C68BE]/[0.08] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#0C68BE]">
                 {c.kind === "document" ? "Document" : c.kind === "collection" ? "Collection" : "Explainer"}
               </span>
-              {c.year ? (
-                <span className="text-[11px] font-semibold tabular-nums text-[#86929E]">{c.year}</span>
-              ) : null}
+              <div className="flex items-center gap-1.5">
+                {c.countryCode && (
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#0C68BE]">
+                    {c.countryCode}
+                  </span>
+                )}
+                {c.year ? (
+                  <span className="text-[11px] font-semibold tabular-nums text-[#86929E]">{c.year}</span>
+                ) : null}
+              </div>
             </div>
             <h3 className="mt-3 text-[15px] font-semibold leading-snug text-[#0B151F] group-hover:text-[#0C68BE] sm:text-base">
               {c.title}
