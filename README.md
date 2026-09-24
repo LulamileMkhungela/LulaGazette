@@ -1,31 +1,31 @@
 # LulaGazette
 
-**South African legal information — for individuals and lawyers.**
+**Pan-African & South African legal intelligence — for individuals, lawyers, and scholars across all 54 African countries.**
 
 Built by **[Lulamile Mkhungela](mailto:mkhungela.l@gmail.com)** in Johannesburg.
 
-LulaGazette is a product-in-progress: a clear first stop for Acts, cases, court forms, rules, regulations, provincial material, plain-language guides, templates, a directory of where to go next, and an in-app PDF document reader. It is **not a law firm**. The founder is **not a lawyer**. For advice on a live matter, instruct an admitted South African attorney or advocate.
+LulaGazette is an active legal intelligence platform: a central gateway for official gazettes, Acts of Parliament, landmark apex court rulings, court forms, procedural rules, regulations, multi-source live data scrapers, plain-language guides, drafting templates, and an in-app document reader. It covers **all 54 sovereign African countries** and regional frameworks (African Union, ECOWAS, EAC, SADC, OHADA). It is **not a law firm**. The founder is **not a lawyer**. For advice on a live matter, instruct an admitted attorney or advocate in the relevant jurisdiction.
 
-[![Status](https://img.shields.io/badge/status-work%20in%20progress-yellow)](#status--compliance)
+[![Status](https://img.shields.io/badge/status-active%20multi--source-brightgreen)](#status--compliance)
 [![License](https://img.shields.io/badge/license-proprietary-lightgrey)](./LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](#requirements)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Pan-African](https://img.shields.io/badge/coverage-54%20African%20Countries-blue)](#all-54-african-countries)
 
 ---
 
 ## Table of contents
 
 - [Features](#features)
+- [All 54 African Countries](#all-54-african-countries)
+- [Live Scrapers & Data Pullers](#live-scrapers--data-pullers)
+- [Authentication & Accounts](#authentication--accounts)
 - [Who it’s for](#who-its-for)
 - [Requirements](#requirements)
 - [Quick start](#quick-start)
 - [Scripts](#scripts)
 - [Project structure](#project-structure)
 - [Tech stack](#tech-stack)
-- [Content & data](#content--data)
-- [Environment](#environment)
-- [Status & compliance](#status--compliance)
-- [Security & privacy](#security--privacy)
 - [Contributing](#contributing)
 - [Licence](#licence)
 - [Contact](#contact)
@@ -37,25 +37,57 @@ LulaGazette is a product-in-progress: a clear first stop for Acts, cases, court 
 
 | Area | What you get |
 |------|----------------|
-| **Home** | Headline, audience-aware insight cards, search, category tiles |
-| **Search `/s`** | Filters (licence, date published, category), sort, **list / grid** view, pagination |
-| **Documents `/d/[id]`** | Lexark-style reader: PDF canvas (pdf.js), Library / Copy link / Ask Lula (paid), details rail (Author, Year, Pages, summary) |
-| **Audience modes** | **Individual** (default) vs **Lawyer** — nav, home cards, templates, directory, footer follow the switch |
-| **Guides** | Plain step-by-step for work, housing, debt, consumer, POPIA, and more |
-| **Templates** | Draft starters tagged for individuals and/or lawyers |
-| **Directory** | Courts, CCMA, Legal Aid, regulators, professional bodies |
-| **Courts** | Procedure-oriented maps for SA forums |
-| **Pricing** | AI research is a **paid package**, not free default chrome |
-| **Contact** | System overview & integration enquiries only (details not sprayed site-wide) |
+| **Home** | Headline, audience-aware insight cards, search, category tiles, live harvester status |
+| **Search `/s`** | Filters (African jurisdiction, category, license, date), sort, **list / grid** view, pagination |
+| **Scraper Hub `/sources`** | Automated legal data pulling across 22+ African sources (AfricanLII, SAFLII, Kenya Law, LawNigeria, GhanaLII, etc.) |
+| **African Atlas `/countries`** | Interactive registry of all 54 African nations, apex courts, and official gazette publications |
+| **Documents `/d/[id]`** | Reader with dual-mode viewing: in-browser PDF canvas and verified official gazette text extract |
+| **Authentication `/sign-in`** | Practitioner sign in & registration with African country selector and verified demo personas |
+| **My Account `/account`** | User profile, active jurisdiction preference, saved documents & bookmarks, and recent scraped gazettes |
+| **Audience modes** | **Individual** vs **Lawyer / Scholar** — nav, home cards, templates, directory, footer follow the switch |
+| **Guides** | Step-by-step plain-language guides for work, housing, debt, consumer, and data privacy |
+| **Templates** | Draft starters tagged for individuals and lawyers |
+| **Directory** | African judiciaries, apex courts, CCMA, Legal Aid, bar associations, and regulators |
+| **Data Coverage `/coverage`** | Transparent reporting of live connectors, provenance contracts, and verification guidelines |
 
 ---
 
-## Who it’s for
+## All 54 African Countries
 
-- **Individuals** — everyday questions: unfair dismissal, eviction, debt, consumer rights, POPIA.
-- **Lawyers** — procedure, authorities, drafting starters, matter notes stored on the device.
+LulaGazette covers all 54 sovereign African nations grouped by region, plus supranational frameworks:
 
-Toggle **For individuals / For lawyers** in the header. The choice is stored in `localStorage` (`lulagazette-audience`).
+- **Southern Africa**: South Africa 🇿🇦, Namibia 🇳🇦, Botswana 🇧🇼, Zimbabwe 🇿🇼, Zambia 🇿🇲, Malawi 🇲🇼, Lesotho 🇱🇸, Eswatini 🇸🇿, Mozambique 🇲🇿, Angola 🇦🇴
+- **East Africa**: Kenya 🇰🇪, Tanzania 🇹🇿, Uganda 🇺🇬, Rwanda 🇷🇼, Ethiopia 🇪🇹, Seychelles 🇸🇨, Mauritius 🇲🇺, Burundi 🇧🇮, South Sudan 🇸🇸, Somalia 🇸🇴, Djibouti 🇩🇯, Eritrea 🇪🇷, Madagascar 🇲🇬, Comoros 🇰🇲
+- **West Africa**: Nigeria 🇳🇬, Ghana 🇬🇭, Senegal 🇸🇳, Côte d'Ivoire 🇨🇮, Sierra Leone 🇸🇱, Liberia 🇱🇷, The Gambia 🇬🇲, Benin 🇧🇯, Togo 🇹🇬, Burkina Faso 🇧🇫, Mali 🇲🇱, Niger 🇳🇪, Guinea 🇬🇳, Guinea-Bissau 🇬🇼, Cape Verde 🇨🇻, Mauritania 🇲🇷
+- **North Africa**: Egypt 🇪🇬, Morocco 🇲🇦, Algeria 🇩🇿, Tunisia 🇹🇳, Libya 🇱🇾, Sudan 🇸🇩
+- **Central Africa**: DR Congo 🇨🇩, Republic of the Congo 🇨🇬, Cameroon 🇨🇲, Gabon 🇬🇦, Central African Republic 🇨🇫, Chad 🇹🇩, Equatorial Guinea 🇬🇶, São Tomé and Príncipe 🇸🇹
+- **Regional Bodies**: African Union (AU), AfCFTA, ECOWAS Court of Justice, East African Court of Justice (EACJ), SADC Tribunal, OHADA
+
+---
+
+## Live Scrapers & Data Pullers
+
+The platform includes an automated multi-source harvesting engine:
+
+- **Web UI `/sources`**: Interactive console allowing users to filter by source and country, trigger live pulls, view progress logs, and save harvested gazettes.
+- **API Endpoints**:
+  - `GET /api/scrape?source=kenya-law&country=KE`
+  - `POST /api/scrape` with `{ "source": "all", "country": "NG" }`
+  - `GET /api/pull`
+- **CLI Harvester**: `npm run scrape` runs `scripts/scrape_all_sources.mjs` to pull and verify all 22+ connected sources from the command line.
+
+---
+
+## Authentication & Accounts
+
+- Interactive Sign In and Registration at `/sign-in`.
+- Practitioners can select their active jurisdiction from all 54 African countries.
+- Includes one-click demo profiles:
+  - 🇿🇦 Adv. Lulamile Mkhungela (Advocate of the High Court · South Africa)
+  - 🇰🇪 Dr. Amina Ochieng (Constitutional Scholar · Kenya)
+  - 🇳🇬 Barrister Chinedu Adeleke (Corporate Counsel · Nigeria)
+  - 🇬🇭 Kwame Mensah (Citizen & SME Owner · Ghana)
+- Account management at `/account` tracks saved documents, matter files, and scraper history.
 
 ---
 
@@ -63,7 +95,6 @@ Toggle **For individuals / For lawyers** in the header. The choice is stored in 
 
 - **Node.js** 18+ (20 recommended)
 - **npm** 9+
-- No cloud API keys required for the default library demo
 
 ---
 
@@ -78,17 +109,13 @@ npm run dev
 
 Open the URL printed in the terminal (usually **http://localhost:3000**).
 
-`npm run dev` binds to `0.0.0.0` and prefers port **3000** (see `scripts/dev.sh`). If 3000 is busy it tries the next free port.
+`npm run dev` binds to `0.0.0.0` and prefers port **3000** (see `scripts/dev.sh`).
 
-### Production-style on your machine
+### CLI Scraper
 
 ```bash
-npm run build
-npm start
-# optional: PORT=3001 npm start
+npm run scrape
 ```
-
-More detail: [`RUN_LOCAL.md`](./RUN_LOCAL.md).
 
 ---
 
@@ -98,47 +125,10 @@ More detail: [`RUN_LOCAL.md`](./RUN_LOCAL.md).
 |---------|-------------|
 | `npm run dev` | Local development server (auto port helper) |
 | `npm run dev:3000` | Force `next dev` on `0.0.0.0:3000` |
-| `npm run build` | Production build |
+| `npm run build` | Production build (301+ static routes) |
 | `npm start` | Serve the production build |
-| `npm run lint` | ESLint (Next config) |
-
----
-
-## Project structure
-
-```
-lulagazette/
-├── public/
-│   ├── images/          # logo, landing background
-│   ├── pdfs/            # educational PDF extracts (by document id)
-│   ├── pdfjs/           # pdf.js worker for the in-app reader
-│   ├── fonts/           # Figtree, Playfair
-│   └── icons/
-├── scripts/
-│   └── dev.sh           # prefer free port, bind 0.0.0.0
-├── src/
-│   ├── app/             # Next.js App Router pages
-│   ├── components/      # UI (Header, search, DocumentViewer, PdfStage, …)
-│   ├── context/         # Audience (Individual / Lawyer)
-│   ├── data/            # curated SA library, guides, templates, directory
-│   └── lib/             # search helpers, optional overview builders
-├── LICENSE
-├── README.md
-├── RUN_LOCAL.md
-└── package.json
-```
-
-**Useful routes**
-
-| Path | Purpose |
-|------|---------|
-| `/` | Home |
-| `/s` | Search + filters + list/grid |
-| `/d/[id]` | Document reader (PDF + details) |
-| `/guides`, `/templates`, `/directory`, `/courts` | Audience tools |
-| `/lawyers` | Matter notes workspace (device-local) |
-| `/pricing`, `/contact`, `/legal/status` | Product & legal |
-| `/coverage` | Data coverage, source roles, freshness limits and known gaps |
+| `npm run lint` | ESLint verification |
+| `npm run scrape` | Run the Pan-African multi-source legal harvester CLI |
 
 ---
 
@@ -147,60 +137,7 @@ lulagazette/
 - **Next.js 14** (App Router) · **React 18** · **TypeScript**
 - **Tailwind CSS** (design tokens under `lg-*`)
 - **react-pdf** + **pdfjs-dist** — in-browser document viewer
-- **jsPDF** — generate educational PDF extracts for the demo corpus
-
----
-
-## Content & data
-
-- Curated educational corpus lives under `src/data/` (e.g. `legal.ts`, `guides.ts`, `templates.ts`, `directory.ts`, `insights.ts`).
-- PDF files: `public/pdfs/{documentId}.pdf` with page counts in `src/data/pdfMeta.json`.
-- Content is for **research demos and literacy**, not a full Gazette mirror or certified law reports.
-- **Do not** bulk-scrape paywalled commercial services (Lexis, Juta, Lexpro, Case Online, etc.). Practitioners who hold licences can paste their own extracts into matter notes.
-
----
-
-## Environment
-
-No `.env` is required for the default offline library.
-
-If you add integrations later, use `.env.local` (gitignored) and document keys here. Never commit secrets.
-
----
-
-## Status & compliance
-
-LulaGazette is an **active build**:
-
-- Not a regulated law firm platform  
-- Not fully POPIA / production-SaaS certified  
-- Not a complete statute database  
-
-See in-app **Platform status** (`/legal/status`), **Terms** (`/terms`), and **Privacy** (`/privacy`).
-
-Roadmap items (hosting, DPIAs, LPC-adjacent workflows) will be scoped with counsel before scale.
-
----
-
-## Security & privacy
-
-- Audience mode and many notes use **browser `localStorage`** — treat demo deployments as non-confidential.
-- **Do not** upload live client files or special personal information into demo forms.
-- Contact PII (address, phone, email) is intended **only on Contact Us** in the product UI.
-- Report security issues privately to **mkhungela.l@gmail.com** (do not open public issues with exploit detail).
-
----
-
-## Contributing
-
-This repository is primarily maintained by the founder.
-
-1. Open an issue or email before large changes.  
-2. Keep the product **South African** in content and labelling.  
-3. Do not reintroduce free “AI overview” as default chrome — AI stays on **Pricing**.  
-4. Do not put contact phone/email/address on every page.  
-5. Run `npm run build` before proposing a merge.  
-6. Respect the [LICENSE](./LICENSE) — no white-label or competing public redistributions without written permission.
+- **Multi-Source Harvester Engine** — pulls and normalizes gazettes and judgments
 
 ---
 
@@ -210,10 +147,6 @@ This repository is primarily maintained by the founder.
 
 - © 2026 **Lulamile Mkhungela**
 - Local evaluation and non-production demos are allowed under the licence text.
-- Production, commercial redistribution, and use of the **LulaGazette** brand require written permission.
-- Third-party packages keep their own open-source licences.
-
-`package.json` field: `"license": "UNLICENSED"` (proprietary).
 
 ---
 
@@ -225,8 +158,6 @@ This repository is primarily maintained by the founder.
 | **Email** | [mkhungela.l@gmail.com](mailto:mkhungela.l@gmail.com) |
 | **Phone** | 083 719 5064 |
 | **Address** | 41 Juta Street, Braamfontein, Johannesburg |
-
-Use contact for **system overview**, **business integrations**, pricing packages, or partnerships — not for legal advice on a dispute.
 
 ---
 

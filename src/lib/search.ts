@@ -6,6 +6,7 @@ export type SortKey = "year-desc" | "year-asc" | "title-asc" | "title-desc";
 export type SearchQuery = {
   q?: string;
   c?: string; // category id
+  country?: string; // 2-letter ISO or 'all'
   sort?: SortKey;
   limit?: number;
   page?: number;
@@ -26,6 +27,7 @@ export function parseSearchParams(sp: Record<string, string | string[] | undefin
   return {
     q: g("q") || "",
     c: g("c") || "",
+    country: g("country") || g("cCode") || "",
     sort: ["year-desc", "year-asc", "title-asc", "title-desc"].includes(sort) ? sort : "year-desc",
     limit,
     page,
@@ -43,7 +45,7 @@ export function runSearch(query: SearchQuery): {
   totalPages: number;
 } {
   const cat = categories.some((c) => c.id === query.c) ? (query.c as CategoryId) : undefined;
-  let list = searchDocuments(query.q || "", cat || "all");
+  let list = searchDocuments(query.q || "", cat || "all", query.country);
 
   // license: all free in demo except we mark none premium for now — premium empty unless tagged
   if (query.license === "premium") {

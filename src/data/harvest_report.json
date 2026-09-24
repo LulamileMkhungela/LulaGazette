@@ -1,0 +1,200 @@
+[
+  {
+    "sourceId": "africanlii",
+    "sourceName": "AfricanLII (Pan-African Legal Information Institute)",
+    "country": "Pan-African",
+    "totalRecordsAvailable": 145000,
+    "harvestedThisSession": 4,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.835Z"
+  },
+  {
+    "sourceId": "au-portal",
+    "sourceName": "African Union Legal & Treaties Portal",
+    "country": "African Union",
+    "totalRecordsAvailable": 1240,
+    "harvestedThisSession": 6,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.835Z"
+  },
+  {
+    "sourceId": "ecowas-court",
+    "sourceName": "ECOWAS Community Court of Justice",
+    "country": "ECOWAS Community",
+    "totalRecordsAvailable": 3400,
+    "harvestedThisSession": 7,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.836Z"
+  },
+  {
+    "sourceId": "eacj",
+    "sourceName": "East African Court of Justice (EACJ)",
+    "country": "East African Community",
+    "totalRecordsAvailable": 1850,
+    "harvestedThisSession": 9,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.836Z"
+  },
+  {
+    "sourceId": "ohada-portal",
+    "sourceName": "OHADA / CCJA Portal (Common Court of Justice)",
+    "country": "OHADA (17 nations)",
+    "totalRecordsAvailable": 8900,
+    "harvestedThisSession": 4,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.836Z"
+  },
+  {
+    "sourceId": "saflii",
+    "sourceName": "SAFLII (Southern African Legal Information Institute)",
+    "country": "South Africa",
+    "totalRecordsAvailable": 120000,
+    "harvestedThisSession": 11,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.836Z"
+  },
+  {
+    "sourceId": "gov-gazette",
+    "sourceName": "South Africa Government Gazette / gov.za",
+    "country": "South Africa",
+    "totalRecordsAvailable": 42000,
+    "harvestedThisSession": 7,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.836Z"
+  },
+  {
+    "sourceId": "kenya-law",
+    "sourceName": "Kenya Law (National Council for Law Reporting)",
+    "country": "Kenya",
+    "totalRecordsAvailable": 85000,
+    "harvestedThisSession": 4,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.836Z"
+  },
+  {
+    "sourceId": "kenya-gazette",
+    "sourceName": "The Kenya Gazette Online",
+    "country": "Kenya",
+    "totalRecordsAvailable": 28000,
+    "harvestedThisSession": 10,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.836Z"
+  },
+  {
+    "sourceId": "lawnigeria",
+    "sourceName": "LawNigeria & Federal Ministry of Justice",
+    "country": "Nigeria",
+    "totalRecordsAvailable": 76000,
+    "harvestedThisSession": 7,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "nigeria-gazette",
+    "sourceName": "Federal Republic of Nigeria Official Gazette",
+    "country": "Nigeria",
+    "totalRecordsAvailable": 19500,
+    "harvestedThisSession": 5,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "ghanalii",
+    "sourceName": "GhanaLII (Ghana Legal Information Institute)",
+    "country": "Ghana",
+    "totalRecordsAvailable": 32000,
+    "harvestedThisSession": 7,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "ugandalii",
+    "sourceName": "UgandaLII (Uganda Legal Information Institute)",
+    "country": "Uganda",
+    "totalRecordsAvailable": 24000,
+    "harvestedThisSession": 8,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "tanzlii",
+    "sourceName": "TanzLII (Tanzania Legal Information Institute)",
+    "country": "Tanzania",
+    "totalRecordsAvailable": 18500,
+    "harvestedThisSession": 8,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "rwanda-law",
+    "sourceName": "Rwanda Ministry of Justice & Official Gazette",
+    "country": "Rwanda",
+    "totalRecordsAvailable": 12000,
+    "harvestedThisSession": 7,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "zimlii",
+    "sourceName": "ZimLII (Zimbabwe Legal Information Institute)",
+    "country": "Zimbabwe",
+    "totalRecordsAvailable": 29000,
+    "harvestedThisSession": 5,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "namlii",
+    "sourceName": "NamLII (Namibia Legal Information Institute)",
+    "country": "Namibia",
+    "totalRecordsAvailable": 16500,
+    "harvestedThisSession": 5,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "seylii",
+    "sourceName": "SeyLII (Seychelles Legal Information Institute)",
+    "country": "Seychelles",
+    "totalRecordsAvailable": 9500,
+    "harvestedThisSession": 7,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "leslii",
+    "sourceName": "LesLII (Lesotho Legal Information Institute)",
+    "country": "Lesotho",
+    "totalRecordsAvailable": 8700,
+    "harvestedThisSession": 8,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "swazilii",
+    "sourceName": "SwaziLII (Eswatini Legal Information Institute)",
+    "country": "Eswatini",
+    "totalRecordsAvailable": 7400,
+    "harvestedThisSession": 5,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "malawilii",
+    "sourceName": "MalawiLII (Malawi Legal Information Institute)",
+    "country": "Malawi",
+    "totalRecordsAvailable": 11000,
+    "harvestedThisSession": 4,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  },
+  {
+    "sourceId": "zambialii",
+    "sourceName": "ZambiaLII (Zambia Legal Information Institute)",
+    "country": "Zambia",
+    "totalRecordsAvailable": 15400,
+    "harvestedThisSession": 6,
+    "status": "HEALTHY",
+    "lastChecked": "2026-09-24T19:00:20.837Z"
+  }
+]
