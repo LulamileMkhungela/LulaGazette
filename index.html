@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LulaGazette | Pan-African Legal Intelligence & Official Gazettes</title>
+  <meta name="description" content="LulaGazette — Pan-African Acts, cases, official gazettes, live scrapers, and court rules across all 54 African countries." />
+  <meta name="author" content="Lulamile Mkhungela" />
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml" />
+  <style>
+    @font-face {
+      font-family: "Figtree";
+      src: url("public/fonts/Figtree-Light.woff2") format("woff2");
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: "Figtree";
+      src: url("public/fonts/Figtree-Regular.woff2") format("woff2");
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: "Figtree";
+      src: url("public/fonts/Figtree-Medium.woff2") format("woff2");
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: "Figtree";
+      src: url("public/fonts/Figtree-Bold.woff2") format("woff2");
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: "Playfair Display";
+      src: url("public/fonts/PlayfairDisplay.ttf") format("truetype");
+      font-weight: 400 800; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      --blue: #0C68BE;
+      --blue-bright: #0F80EB;
+      --navy: #0B151F;
+      --ink: #112130;
+      --slate: #1D2E40;
+      --muted: #5E7B99;
+      --soft: #677480;
+      --line: #E5EEF5;
+      --wash: #F5F8FB;
+      --green: #298D62;
+      --cyan: #49A9C9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; }
+    .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .header-in {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; padding: 12px 0;
+    }
+    .brand img { height: 32px; width: auto; }
+    nav.main-nav { display: flex; align-items: center; gap: 4px; }
+    nav.main-nav a {
+      padding: 8px 12px; border-radius: 8px;
+      font-size: 13.5px; font-weight: 600; color: var(--slate);
+      transition: background 0.15s, color 0.15s;
+    }
+    nav.main-nav a:hover { background: var(--wash); color: var(--navy); }
+    
+    .country-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--wash); border: 1px solid var(--line);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .country-pill:hover { border-color: var(--blue); }
+
+    .btn-blue {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px; border-radius: 10px;
+      background: var(--blue); color: #fff;
+      font-size: 13.5px; font-weight: 600;
+      border: 0; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(12, 104, 190, 0.2);
+      transition: background 0.15s, transform 0.15s;
+    }
+    .btn-blue:hover { background: var(--blue-bright); transform: translateY(-1px); }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-radius: 10px;
+      background: #fff; color: var(--ink);
+      font-size: 13.5px; font-weight: 600;
+      border: 1px solid var(--line); cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-outline:hover { background: var(--wash); border-color: var(--blue); }
+
+    /* Notice strip */
+    .strip {
+      border-top: 1px solid #E0F2FE;
+      background: #F0F9FF;
+      padding: 6px 24px;
+      font-size: 12px; color: #0369A1;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      background: url("public/images/landing_bg.png") center / cover no-repeat;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.7) 50%, #ffffff 100%);
+    }
+    .hero-in {
+      position: relative;
+      max-width: 940px; margin: 0 auto;
+      padding: 72px 24px 48px;
+      text-align: center;
+    }
+    .kicker {
+      display: inline-block;
+      padding: 6px 14px; border-radius: 999px;
+      background: rgba(12, 104, 190, 0.1);
+      color: var(--blue);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin-top: 16px;
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(2.1rem, 4.8vw, 3.4rem);
+      line-height: 1.15;
+      color: var(--navy);
+    }
+    .hero .sub {
+      margin: 12px auto 0;
+      max-width: 720px;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--soft);
+    }
+
+    /* Interactive Search Box */
+    .search-box-wrap {
+      margin: 32px auto 0;
+      max-width: 680px;
+      display: flex; align-items: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 6px 6px 6px 18px;
+      box-shadow: 0 12px 40px rgba(11, 21, 31, 0.08);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-box-wrap:focus-within {
+      border-color: var(--blue);
+      box-shadow: 0 12px 40px rgba(12, 104, 190, 0.15);
+    }
+    .search-box-wrap input {
+      flex: 1; min-width: 0; border: 0; outline: 0;
+      font: inherit; font-size: 15px; color: var(--ink);
+      background: transparent;
+    }
+    .search-box-wrap button {
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px;
+      border: 0; border-radius: 10px;
+      background: var(--blue); cursor: pointer;
+      transition: background 0.15s;
+    }
+    .search-box-wrap button:hover { background: var(--blue-bright); }
+    .search-box-wrap button img { width: 16px; height: 16px; filter: invert(1); }
+
+    /* Category buttons */
+    .cats {
+      position: relative;
+      margin: 36px auto 0;
+      max-width: 980px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+    .cat-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      padding: 18px 8px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .cat-btn:hover, .cat-btn.active {
+      transform: translateY(-2px);
+      border-color: var(--blue);
+      box-shadow: 0 8px 24px rgba(12, 104, 190, 0.1);
+    }
+    .cat-ico {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border-radius: 12px;
+    }
+    .cat-ico img { width: 24px; height: 24px; }
+    .cat-btn span.lbl { font-size: 13px; font-weight: 600; color: var(--navy); }
+    .cat-btn:hover span.lbl, .cat-btn.active span.lbl { color: var(--blue); }
+
+    /* Sections */
+    section.block { border-top: 1px solid var(--line); padding: 56px 0; }
+    .block-h { text-align: center; max-width: 720px; margin: 0 auto; }
+    .block-h h2 {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 500; font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--navy);
+    }
+    .block-h p { margin-top: 8px; font-size: 15px; color: var(--soft); }
+
+    /* Results and Harvester Cards */
+    .doc-grid {
+      margin-top: 32px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+    .doc-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .doc-card:hover { border-color: rgba(12, 104, 190, 0.4); box-shadow: 0 6px 20px rgba(11, 21, 31, 0.06); }
+    .doc-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 6px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+    }
+    .badge-cat { background: rgba(12, 104, 190, 0.1); color: var(--blue); }
+    .badge-country { background: var(--wash); color: var(--navy); }
+    .badge-status { background: #ECFDF5; color: #047857; }
+    .doc-card h3 { font-size: 16px; font-weight: 600; color: var(--navy); line-height: 1.35; }
+    .doc-card .citation { font-family: monospace; font-size: 12px; color: var(--blue); margin-top: 4px; }
+    .doc-card .summary { font-size: 13px; color: var(--soft); margin-top: 8px; line-height: 1.5; }
+
+
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(11, 21, 31, 0.6);
+      backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #fff; border-radius: 24px; max-width: 520px; width: 100%;
+      padding: 32px; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+      max-height: 90vh; overflow-y: auto;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      background: #0B151F;
+      color: #9FB4C8;
+      padding: 60px 0 36px;
+      font-size: 13.5px;
+    }
+    footer a:hover { color: #fff; }
+    .foot-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    }
+    .foot-bottom {
+      margin-top: 48px; pt-6 border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 24px; font-size: 12px;
+    }
+
+    @media (max-width: 860px) {
+      .cats { grid-template-columns: repeat(3, 1fr); }
+      .foot-grid { grid-template-columns: 1fr; gap: 24px; }
+      nav.main-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Strip -->
+  <div class="strip">
+    <div class="wrap" style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+      <span><strong>Pan-African Legal Intelligence</strong> — Official gazettes, acts, cases & live scrapers across 54 African countries</span>
+      <span><a href="#scraper" style="font-weight:700; text-decoration:underline;">Live Scraper Active ↗</a></span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="wrap">
+      <div class="header-in">
+        <a class="brand" href="index.html" aria-label="LulaGazette home">
+          <img src="public/images/logo.svg" alt="LulaGazette" />
+        </a>
+
+        <!-- Jurisdiction Switcher -->
+        <div class="country-pill" id="countryBtn" onclick="toggleCountryModal()">
+          <span id="headerFlag">🌍</span>
+          <span id="headerCountry">All Africa</span>
+          <span style="font-size:10px; opacity:0.6;">▼</span>
+        </div>
+
+        <nav class="main-nav">
+          <a href="#library">Library</a>
+          <a href="#scraper">Gazettes &amp; Scraper</a>
+          <a href="#countries">54 Countries</a>
+          <a href="#next-steps">I Need Help</a>
+          <a href="http://localhost:3000" target="_blank" rel="noopener">Launch Full App</a>
+        </nav>
+
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="btn-outline" id="authBtn" onclick="openAuthModal()">Sign In</button>
+          <a class="btn-blue" href="https://github.com/LulamileMkhungela/LulaGazette" target="_blank" rel="noopener">
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-in">
+        <span class="kicker">Pan-African &amp; South African Legal Information</span>
+        <h1>Smart Legal Intelligence Across Africa</h1>
+        <p class="sub">Official gazettes, Acts of parliament, apex court precedents, court rules, and live data harvesters across <strong>54 sovereign African countries</strong>.</p>
+
+        <!-- Search Box -->
+        <form class="search-box-wrap" id="searchForm" onsubmit="handleSearch(event)">
+          <input type="text" id="searchInput" placeholder="Search Acts, cases, gazettes across Africa (e.g. data protection, employment, CAMA)..." aria-label="Search" />
+          <button type="submit" aria-label="Search">
+            <img src="public/icons/search.svg" alt="" />
+          </button>
+        </form>
+
+        <!-- Category Grid -->
+        <div class="cats" id="categories">
+          <button class="cat-btn" onclick="filterCat('acts', this)">
+            <span class="cat-ico" style="background:#0C68BE18"><img src="public/icons/law.svg" alt="" /></span>
+            <span class="lbl">Acts</span>
+          </button>
+          <button class="cat-btn" onclick="filterCat('cases', this)">
+            <span class="cat-ico" style="background:#298D6218"><img src="public/icons/cases.svg" alt="" /></span>
+            <span class="lbl">Cases</span>
+          </button>
+          <button class="cat-btn" onclick="filterCat('court-forms', this)">
+            <span class="cat-ico" style="background:#49A9C918"><img src="public/icons/institution.svg" alt="" /></span>
+            <span class="lbl">Court Forms</span>
+          </button>
+          <button class="cat-btn" onclick="filterCat('court-rules', this)">
+            <span class="cat-ico" style="background:#0F80EB18"><img src="public/icons/reg.svg" alt="" /></span>
+            <span class="lbl">Court Rules</span>
+          </button>
+          <button class="cat-btn" onclick="filterCat('regulations', this)">
+            <span class="cat-ico" style="background:#5E7B9918"><img src="public/icons/reg.svg" alt="" /></span>
+            <span class="lbl">Regulations</span>
+          </button>
+          <button class="cat-btn" onclick="filterCat('all', this)">
+            <span class="cat-ico" style="background:#1E4D3918"><img src="public/icons/law.svg" alt="" /></span>
+            <span class="lbl">All Laws</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Library Documents Feed -->
+    <section class="block" id="library">
+      <div class="wrap">
+        <div class="block-h">
+          <h2>Pan-African Legal Library</h2>
+          <p id="corpusSubtitle">Exploring curated and harvested records across African jurisdictions.</p>
+        </div>
+
+        <div class="doc-grid" id="documentsGrid">
+          <!-- Dynamic Document Cards injected by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Scraper & Harvester Console -->
+    <section class="block" id="scraper" style="background:var(--wash);">
+      <div class="wrap">
+        <div class="block-h">
+          <h2>Pan-African Legal Harvester &amp; Scraper</h2>
+          <p>Automated data pulling connecting AfricanLII, SAFLII, Kenya Law, LawNigeria, GhanaLII, and official gazette printers.</p>
+        </div>
+
+        <div style="margin-top:28px; background:#fff; border:1px solid var(--line); border-radius:20px; padding:24px;">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px;">
+            <div>
+              <h3 style="font-size:16px; font-weight:700;">Live Multi-Source Puller</h3>
+              <p style="font-size:13px; color:var(--soft);">Extract the latest official gazette notices and statutory updates.</p>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <select id="scraperSourceSelect" style="padding:8px 12px; border-radius:10px; border:1px solid var(--line); font-size:13px;">
+                <option value="all">🌐 All African Legal Sources (22)</option>
+                <option value="kenya-law">🇰🇪 Kenya Law &amp; Gazette</option>
+                <option value="lawnigeria">🇳🇬 LawNigeria &amp; Federal Gazette</option>
+                <option value="ghanalii">🇬🇭 GhanaLII (Labour &amp; Acts)</option>
+                <option value="saflii">🇿🇦 SAFLII &amp; Gov.za</option>
+                <option value="africanlii">🌍 AfricanLII Portal</option>
+              </select>
+              <button class="btn-blue" id="runScraperBtn" onclick="runLiveScraper()">
+                ⚡ Pull Latest Data
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 54 African Countries Registry -->
+    <section class="block" id="countries">
+      <div class="wrap">
+        <div class="block-h">
+          <h2>All 54 African Sovereign Jurisdictions</h2>
+          <p>Select any African country to inspect apex courts, official gazette publications, and national legal systems.</p>
+        </div>
+
+        <div style="margin-top:28px; display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:14px;" id="countriesGrid">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Next Steps -->
+    <section class="block" id="next-steps" style="background:#FAFDFF;">
+      <div class="wrap">
+        <div class="block-h">
+          <h2>Explore Next Steps</h2>
+          <p>Everyday citizen assistance, lawyer matter preparation, and system integration.</p>
+        </div>
+        <div style="margin-top:32px; display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;">
+          <div style="background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px;">
+            <h3 style="font-size:16px; font-weight:700;">I Need Help (Citizens)</h3>
+            <p style="margin-top:8px; font-size:13.5px; color:var(--soft);">Step-by-step guides for unfair dismissal, tenant eviction, consumer rights, debt review, and POPIA / data protection.</p>
+          </div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px;">
+            <h3 style="font-size:16px; font-weight:700;">Lawyer Matter Workspace</h3>
+            <p style="margin-top:8px; font-size:13.5px; color:var(--soft);">Pleading starters, court procedure maps, authority bundles, and local matter notes stored on device.</p>
+          </div>
+          <div style="background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px;">
+            <h3 style="font-size:16px; font-weight:700;">System Walkthrough</h3>
+            <p style="margin-top:8px; font-size:13.5px; color:var(--soft);">LulaGazette is built in Johannesburg by Lulamile Mkhungela. Inquire about integrations, data feeds, and institutional access.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive Sign In Modal -->
+  <div class="modal-overlay" id="authModal" onclick="closeAuthModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="font-family:'Playfair Display', serif; font-size:22px;" id="modalTitle">Sign In to LulaGazette</h2>
+        <button onclick="closeAuthModal()" style="border:0; background:transparent; font-size:18px; cursor:pointer;">✕</button>
+      </div>
+      <p style="margin-top:6px; font-size:13px; color:var(--soft);">Access full gazettes, matter notes, and live scrapers across 54 African countries.</p>
+
+      <form style="margin-top:20px; display:flex; flex-direction:column; gap:12px;" onsubmit="handleModalSubmit(event)">
+        <div>
+          <label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px;">Email address</label>
+          <input type="email" id="modalEmail" placeholder="advocate@chambers.co.za" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--line); font-size:13px;" />
+        </div>
+        <div>
+          <label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px;">Password</label>
+          <input type="password" id="modalPass" placeholder="••••••••" required style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--line); font-size:13px;" />
+        </div>
+        <div>
+          <label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px;">African Jurisdiction</label>
+          <select id="modalCountry" style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--line); font-size:13px;">
+            <option value="ZA">🇿🇦 South Africa</option>
+            <option value="KE">🇰🇪 Kenya</option>
+            <option value="NG">🇳🇬 Nigeria</option>
+            <option value="GH">🇬🇭 Ghana</option>
+            <option value="TZ">🇹🇿 Tanzania</option>
+            <option value="UG">🇺🇬 Uganda</option>
+            <option value="RW">🇷🇼 Rwanda</option>
+            <option value="ZW">🇿🇼 Zimbabwe</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-blue" style="width:100%; justify-content:center; padding:12px; margin-top:8px;">
+          Sign In
+        </button>
+      </form>
+
+      <div style="margin-top:20px; border-top:1px solid var(--line); pt-4; padding-top:16px;">
+        <p style="font-size:11.5px; font-weight:700; color:var(--soft); text-transform:uppercase; text-align:center;">
+          Or test instantly with verified African practitioner profiles:
+        </p>
+        <div style="margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <button class="btn-outline" style="font-size:11px; padding:8px;" onclick="demoLogin('Lulamile Mkhungela', 'ZA', '🇿🇦 Advocate (SA)')">🇿🇦 Adv. Lulamile (SA)</button>
+          <button class="btn-outline" style="font-size:11px; padding:8px;" onclick="demoLogin('Dr. Amina Ochieng', 'KE', '🇰🇪 Scholar (Kenya)')">🇰🇪 Dr. Amina (Kenya)</button>
+          <button class="btn-outline" style="font-size:11px; padding:8px;" onclick="demoLogin('Barrister Chinedu Adeleke', 'NG', '🇳🇬 Counsel (Nigeria)')">🇳🇬 Barr. Chinedu (NG)</button>
+          <button class="btn-outline" style="font-size:11px; padding:8px;" onclick="demoLogin('Kwame Mensah', 'GH', '🇬🇭 Citizen (Ghana)')">🇬🇭 Kwame (Ghana)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document View Modal -->
+  <div class="modal-overlay" id="docModal" onclick="closeDocModal(event)">
+    <div class="modal-box" style="max-width:760px;" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div>
+          <div id="modalDocBadges" style="display:flex; gap:6px; margin-bottom:8px;"></div>
+          <h2 style="font-family:'Playfair Display', serif; font-size:22px;" id="modalDocTitle"></h2>
+          <p style="font-family:monospace; font-size:12px; color:var(--blue); margin-top:4px;" id="modalDocCitation"></p>
+        </div>
+        <button onclick="closeDocModal()" style="border:0; background:transparent; font-size:20px; cursor:pointer;">✕</button>
+      </div>
+
+      <div style="margin-top:16px; border-top:1px solid var(--line); padding-top:14px;">
+        <h4 style="font-size:13px; font-weight:700;">Summary &amp; Legal Context</h4>
+        <p style="margin-top:6px; font-size:13px; color:var(--soft); line-height:1.6;" id="modalDocSummary"></p>
+      </div>
+
+      <div style="margin-top:16px; border-top:1px solid var(--line); padding-top:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h4 style="font-size:13px; font-weight:700;">Official Gazette &amp; Statute Text Extract</h4>
+          <button class="btn-outline" style="font-size:11px; padding:4px 10px;" onclick="copyModalDocText()">Copy Text</button>
+        </div>
+        <div style="margin-top:10px; background:#F8FAFC; border:1px solid var(--line); border-radius:12px; padding:16px; max-height:260px; overflow-y:auto; font-size:12px; font-family:monospace; white-space:pre-wrap;" id="modalDocBody"></div>
+      </div>
+
+      <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+        <button class="btn-outline" onclick="closeDocModal()">Close</button>
+        <button class="btn-blue" id="modalSaveBtn" onclick="toggleSaveModalDoc()">★ Save to My Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <img src="public/images/logo.svg" alt="LulaGazette" style="filter:brightness(0) invert(1); height:28px;" />
+          <p style="margin-top:12px; font-size:13px; max-width:320px; line-height:1.6;">
+            Pan-African and South African legal intelligence platform. Built in Johannesburg by Lulamile Mkhungela.
+          </p>
+        </div>
+        <div>
+          <h4 style="color:#fff; font-size:14px; margin-bottom:12px;">Top Jurisdictions</h4>
+          <ul style="list-style:none; line-height:1.8; font-size:13px;">
+            <li><a href="javascript:selectCountry('ZA')">🇿🇦 South Africa</a></li>
+            <li><a href="javascript:selectCountry('KE')">🇰🇪 Kenya</a></li>
+            <li><a href="javascript:selectCountry('NG')">🇳🇬 Nigeria</a></li>
+            <li><a href="javascript:selectCountry('GH')">🇬🇭 Ghana</a></li>
+            <li><a href="javascript:selectCountry('AU')">🌍 Pan-African / AU</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color:#fff; font-size:14px; margin-bottom:12px;">Legal Categories</h4>
+          <ul style="list-style:none; line-height:1.8; font-size:13px;">
+            <li><a href="#categories" onclick="filterCat('acts')">Acts of Parliament</a></li>
+            <li><a href="#categories" onclick="filterCat('cases')">Constitutional Cases</a></li>
+            <li><a href="#categories" onclick="filterCat('regulations')">Official Gazettes</a></li>
+            <li><a href="#categories" onclick="filterCat('court-rules')">Court Rules &amp; Forms</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color:#fff; font-size:14px; margin-bottom:12px;">Harvesters &amp; Code</h4>
+          <ul style="list-style:none; line-height:1.8; font-size:13px;">
+            <li><a href="#scraper">Live Scraper Console</a></li>
+            <li><a href="https://github.com/LulamileMkhungela/LulaGazette" target="_blank" rel="noopener">GitHub Repository</a></li>
+            <li><a href="RUN_LOCAL.md">Run App Locally</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="foot-bottom">
+        <p>LulaGazette is educational software and general legal information. For live matters, instruct an admitted practitioner.</p>
+        <p>© 2026 LulaGazette. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript Engine -->
+  <script>
+    // Comprehensive Pan-African Legal Corpus
+    const CORPUS = [
+      {
+        id: "const-1996",
+        title: "Constitution of the Republic of South Africa, 1996",
+        citation: "Constitution of the Republic of South Africa, 1996",
+        category: "acts",
+        country: "South Africa",
+        countryCode: "ZA",
+        flag: "🇿🇦",
+        year: 1996,
+        summary: "The supreme law of South Africa establishing the Bill of Rights, constitutional supremacy, and the Constitutional Court.",
+        body: "PREAMBLE: We, the people of South Africa, recognise the injustices of our past; honour those who suffered for justice and freedom...\n\nCHAPTER 1: 1. The Republic of South Africa is one, sovereign, democratic state founded on the following values: (a) Human dignity, equality and freedom; (c) Supremacy of the constitution and the rule of law."
+      },
+      {
+        id: "ke-const-2010",
+        title: "Constitution of Kenya, 2010",
+        citation: "Constitution of Kenya, 2010",
+        category: "acts",
+        country: "Kenya",
+        countryCode: "KE",
+        flag: "🇰🇪",
+        year: 2010,
+        summary: "Supreme law of Kenya featuring devolved government into 47 counties, comprehensive bill of rights, and judicial independence.",
+        body: "PREAMBLE: We, the people of Kenya, acknowledging the supremacy of the Almighty God of all creation...\n\nARTICLE 2: (1) This Constitution is the supreme law of the Republic and binds all persons and all State organs."
+      },
+      {
+        id: "ng-const-1999",
+        title: "Constitution of the Federal Republic of Nigeria 1999",
+        citation: "Constitution of the Federal Republic of Nigeria 1999",
+        category: "acts",
+        country: "Nigeria",
+        countryCode: "NG",
+        flag: "🇳🇬",
+        year: 1999,
+        summary: "Supreme constitutional framework for Nigeria governing 36 federating states, division of legislative powers, and Chapter IV rights.",
+        body: "PREAMBLE: We the people of the Federal Republic of Nigeria, having firmly and solemnly resolved to live in unity and harmony...\n\nSECTION 1: (1) This Constitution is supreme and its provisions shall have binding force on all authorities and persons throughout Nigeria."
+      },
+      {
+        id: "gh-labour-2003",
+        title: "Labour Act, 2003 (Act 651 of Ghana)",
+        citation: "Act 651 of 2003",
+        category: "acts",
+        country: "Ghana",
+        countryCode: "GH",
+        flag: "🇬🇭",
+        year: 2003,
+        summary: "Governs worker protections, unfair termination tests, collective bargaining, and establishes the National Labour Commission.",
+        body: "SECTION 15: Grounds for termination of employment. A contract of employment may be terminated by mutual agreement, by notice, or on grounds of ill-treatment or medical unfitness."
+      },
+      {
+        id: "ng-cama-2020",
+        title: "Companies and Allied Matters Act, 2020 (CAMA 2020)",
+        citation: "Act No. 3 of 2020",
+        category: "acts",
+        country: "Nigeria",
+        countryCode: "NG",
+        flag: "🇳🇬",
+        year: 2020,
+        summary: "Modernized corporate legal framework in Nigeria introducing single-member companies, digital filing, and company rescue administration.",
+        body: "SECTION 18: Right to form a company. One person may form and incorporate a private company by complying with the requirements of this Act."
+      },
+      {
+        id: "ke-data-protection-2019",
+        title: "Data Protection Act, 2019 (Kenya)",
+        citation: "No. 24 of 2019",
+        category: "acts",
+        country: "Kenya",
+        countryCode: "KE",
+        flag: "🇰🇪",
+        year: 2019,
+        summary: "Regulates personal data processing, establishes the Office of the Data Protection Commissioner (ODPC), and sets user privacy rights.",
+        body: "SECTION 25: Principles of data protection. Every data controller or processor shall ensure personal data is processed lawfully, fairly, and transparently."
+      },
+      {
+        id: "au-banjul-charter",
+        title: "African Charter on Human and Peoples' Rights",
+        citation: "CAB/LEG/67/3 rev. 5 (Banjul Charter)",
+        category: "acts",
+        country: "Pan-African",
+        countryCode: "AU",
+        flag: "🌍",
+        year: 1981,
+        summary: "Continental human rights charter establishing civil, political, economic, social, and collective rights across the African continent.",
+        body: "ARTICLE 1: The Member States of the Organization of African Unity parties to the present Charter shall recognize the rights, duties and freedoms enshrined in this Charter."
+      },
+      {
+        id: "ke-cases-raila-2022",
+        title: "Raila Odinga & Others v IEBC [2022] KESC 42",
+        citation: "[2022] KESC 42 (KLR)",
+        category: "cases",
+        country: "Kenya",
+        countryCode: "KE",
+        flag: "🇰🇪",
+        year: 2022,
+        summary: "Supreme Court of Kenya unanimous decision examining electronic election transmission systems and constitutional thresholds.",
+        body: "JUDGMENT: The technology deployed by the IEBC met the constitutional standards of integrity, verifiability, and transparency under Article 86."
+      },
+      {
+        id: "ng-cases-vat-2023",
+        title: "Attorney General of Lagos State v Attorney General of the Federation",
+        citation: "(2023) 14 NWLR (Pt. 1905) 431",
+        category: "cases",
+        country: "Nigeria",
+        countryCode: "NG",
+        flag: "🇳🇬",
+        year: 2023,
+        summary: "Supreme Court of Nigeria ruling on constitutional fiscal federalism and state taxation powers under the 1999 Constitution.",
+        body: "JUDGMENT: General consumption tax within state territories is a matter within state legislative competence under the Nigerian federal structure."
+      },
+      {
+        id: "lra-66-1995",
+        title: "Labour Relations Act 66 of 1995 (South Africa)",
+        citation: "Act 66 of 1995",
+        category: "acts",
+        country: "South Africa",
+        countryCode: "ZA",
+        flag: "🇿🇦",
+        year: 1995,
+        summary: "Primary labour statute governing fair dismissals, CCMA conciliation and arbitration, strikes, and collective bargaining in South Africa.",
+        body: "SECTION 185: Every employee has the right not to be unfairly dismissed and not to be subjected to unfair labour practice."
+      },
+      {
+        id: "popa-4-2013",
+        title: "Protection of Personal Information Act 4 of 2013 (POPIA)",
+        citation: "Act 4 of 2013",
+        category: "acts",
+        country: "South Africa",
+        countryCode: "ZA",
+        flag: "🇿🇦",
+        year: 2013,
+        summary: "South Africa's comprehensive privacy law establishing 8 conditions for lawful processing and Information Regulator enforcement.",
+        body: "SECTION 8: Responsible parties must ensure that the conditions for lawful processing of personal information are complied with."
+      },
+      {
+        id: "rw-companies-2021",
+        title: "Law Governing Commercial Companies (Rwanda)",
+        citation: "Law Nº 007/2021",
+        category: "acts",
+        country: "Rwanda",
+        countryCode: "RW",
+        flag: "🇷🇼",
+        year: 2021,
+        summary: "Rwanda's digitized commercial law facilitating online company formation, virtual meetings, and electronic filings.",
+        body: "ARTICLE 4: Formation of a company. A company may be incorporated by one or more physical persons or legal entities through the Registrar General."
+      }
+    ];
+
+    const AFRICAN_COUNTRIES = [
+      { code: "ZA", name: "South Africa", flag: "🇿🇦", region: "Southern Africa", gazette: "Government Gazette of SA", court: "Constitutional Court" },
+      { code: "KE", name: "Kenya", flag: "🇰🇪", region: "East Africa", gazette: "The Kenya Gazette", court: "Supreme Court of Kenya" },
+      { code: "NG", name: "Nigeria", flag: "🇳🇬", region: "West Africa", gazette: "Federal Republic Gazette", court: "Supreme Court of Nigeria" },
+      { code: "GH", name: "Ghana", flag: "🇬🇭", region: "West Africa", gazette: "The Ghana Gazette", court: "Supreme Court of Ghana" },
+      { code: "TZ", name: "Tanzania", flag: "🇹🇿", region: "East Africa", gazette: "Gazeti la Jamhuri", court: "Court of Appeal" },
+      { code: "UG", name: "Uganda", flag: "🇺🇬", region: "East Africa", gazette: "The Uganda Gazette", court: "Supreme Court of Uganda" },
+      { code: "RW", name: "Rwanda", flag: "🇷🇼", region: "East Africa", gazette: "Igazeti ya Leta", court: "Supreme Court of Rwanda" },
+      { code: "ZW", name: "Zimbabwe", flag: "🇿🇼", region: "Southern Africa", gazette: "Zimbabwean Gazette", court: "Constitutional Court" },
+      { code: "NA", name: "Namibia", flag: "🇳🇦", region: "Southern Africa", gazette: "Government Gazette of Namibia", court: "Supreme Court of Namibia" },
+      { code: "EG", name: "Egypt", flag: "🇪🇬", region: "North Africa", gazette: "Al-Waqa'i' al-Misriyya", court: "Supreme Constitutional Court" },
+      { code: "MA", name: "Morocco", flag: "🇲🇦", region: "North Africa", gazette: "Bulletin Officiel", court: "Cour de Cassation" },
+      { code: "ET", name: "Ethiopia", flag: "🇪🇹", region: "East Africa", gazette: "Federal Negarit Gazette", court: "Federal Supreme Court" }
+    ];
+
+    let currentCountry = "all";
+    let currentCategory = "all";
+    let currentUser = null;
+    let savedDocIds = [];
+    let activeModalDoc = null;
+
+    // Initialize state
+    document.addEventListener("DOMContentLoaded", () => {
+      renderDocuments(CORPUS);
+      renderCountries();
+
+      // Check stored user
+      try {
+        const stored = localStorage.getItem("lulagazette-auth-user");
+        if (stored) {
+          currentUser = JSON.parse(stored);
+          updateUserUI();
+        }
+      } catch(e) {}
+    });
+
+    function renderDocuments(list) {
+      const grid = document.getElementById("documentsGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      if (list.length === 0) {
+        grid.innerHTML = "<div style='grid-column:1/-1; text-align:center; padding:48px 0;'><p style='font-size:16px; font-weight:600;'>No documents match this filter.</p><p style='color:var(--soft); font-size:13px; margin-top:4px;'>Try searching another term or resetting jurisdiction.</p></div>";
+        return;
+      }
+
+      list.forEach(doc => {
+        const card = document.createElement("div");
+        card.className = "doc-card";
+        card.innerHTML = `
+          <div>
+            <div class="doc-meta">
+              <span class="badge badge-cat">${doc.category}</span>
+              <span class="badge badge-country">${doc.flag} ${doc.country}</span>
+              <span style="font-size:11px; color:var(--soft);">${doc.year}</span>
+              <span class="badge badge-status">In Force</span>
+            </div>
+            <h3>${doc.title}</h3>
+            <div class="citation">${doc.citation}</div>
+            <p class="summary">${doc.summary}</p>
+          </div>
+          <div style="margin-top:16px; pt-3; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center;">
+            <button class="btn-blue" style="padding:6px 14px; font-size:12px;" onclick="viewDoc('${doc.id}')">Read Document</button>
+            <button class="btn-outline" style="padding:6px 10px; font-size:12px;" onclick="copyCitation('${doc.title}', '${doc.citation}')">Copy Citation</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderCountries() {
+      const grid = document.getElementById("countriesGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+      AFRICAN_COUNTRIES.forEach(c => {
+        const card = document.createElement("div");
+        card.style.background = "#fff";
+        card.style.border = "1px solid var(--line)";
+        card.style.borderRadius = "14px";
+        card.style.padding = "16px";
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:24px;">${c.flag}</span>
+            <span style="font-size:11px; font-weight:700; color:var(--soft); text-transform:uppercase;">${c.code}</span>
+          </div>
+          <h4 style="font-size:15px; font-weight:700; margin-top:8px;">${c.name}</h4>
+          <p style="font-size:12px; color:var(--soft);">${c.region}</p>
+          <div style="margin-top:10px; font-size:11.5px; border-top:1px solid var(--line); padding-top:8px;">
+            <p><strong>Gazette:</strong> ${c.gazette}</p>
+            <p><strong>Apex:</strong> ${c.court}</p>
+          </div>
+          <button class="btn-outline" style="width:100%; justify-content:center; margin-top:12px; font-size:11px; padding:6px;" onclick="selectCountry('${c.code}')">
+            Filter ${c.name} Laws
+          </button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterCat(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      let filtered = CORPUS;
+      if (cat !== "all") {
+        filtered = filtered.filter(d => d.category === cat);
+      }
+      if (currentCountry !== "all") {
+        filtered = filtered.filter(d => d.countryCode === currentCountry);
+      }
+      renderDocuments(filtered);
+    }
+
+    function handleSearch(e) {
+      e.preventDefault();
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+      if (!q) {
+        renderDocuments(CORPUS);
+        return;
+      }
+      const results = CORPUS.filter(d =>
+        d.title.toLowerCase().includes(q) ||
+        d.summary.toLowerCase().includes(q) ||
+        d.citation.toLowerCase().includes(q) ||
+        d.country.toLowerCase().includes(q)
+      );
+      renderDocuments(results);
+      document.getElementById("library").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function selectCountry(code) {
+      currentCountry = code;
+      const c = AFRICAN_COUNTRIES.find(x => x.code === code);
+      if (c) {
+        document.getElementById("headerFlag").textContent = c.flag;
+        document.getElementById("headerCountry").textContent = c.name;
+      } else {
+        document.getElementById("headerFlag").textContent = "🌍";
+        document.getElementById("headerCountry").textContent = "All Africa";
+      }
+
+      let filtered = CORPUS;
+      if (code !== "all") {
+        filtered = filtered.filter(d => d.countryCode === code || (code === "AU" && d.countryCode === "AU"));
+      }
+      if (currentCategory !== "all") {
+        filtered = filtered.filter(d => d.category === currentCategory);
+      }
+      renderDocuments(filtered);
+      document.getElementById("library").scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Live Scraper Simulation
+    function runLiveScraper() {
+      const btn = document.getElementById("runScraperBtn");
+      btn.disabled = true;
+      btn.textContent = "⏳ Harvesting...";
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = "✓ Ingested Latest Data";
+        setTimeout(() => {
+          btn.textContent = "⚡ Pull Latest Data";
+        }, 1600);
+      }, 700);
+    }
+
+    // Document Modal View
+    function viewDoc(id) {
+      const doc = CORPUS.find(d => d.id === id);
+      if (!doc) return;
+      activeModalDoc = doc;
+
+      document.getElementById("modalDocTitle").textContent = doc.title;
+      document.getElementById("modalDocCitation").textContent = doc.citation;
+      document.getElementById("modalDocSummary").textContent = doc.summary;
+      document.getElementById("modalDocBody").textContent = doc.body;
+
+      const badges = document.getElementById("modalDocBadges");
+      badges.innerHTML = `
+        <span class="badge badge-cat">${doc.category}</span>
+        <span class="badge badge-country">${doc.flag} ${doc.country}</span>
+        <span class="badge badge-status">Verified Official Gazette</span>
+      `;
+
+      document.getElementById("docModal").classList.add("open");
+    }
+
+    function closeDocModal(e) {
+      if (e && e.target !== document.getElementById("docModal")) return;
+      document.getElementById("docModal").classList.remove("open");
+    }
+
+    function copyCitation(title, citation) {
+      navigator.clipboard.writeText(`${title} (${citation})`);
+      alert("Citation copied to clipboard: " + citation);
+    }
+
+    function copyModalDocText() {
+      if (activeModalDoc) {
+        navigator.clipboard.writeText(activeModalDoc.body);
+        alert("Full text copied to clipboard!");
+      }
+    }
+
+    function toggleSaveModalDoc() {
+      if (!activeModalDoc) return;
+      if (!currentUser) {
+        openAuthModal();
+        return;
+      }
+      alert(`Document "${activeModalDoc.title}" saved to ${currentUser.name}'s account.`);
+    }
+
+    // Auth Modal
+    function openAuthModal() {
+      document.getElementById("authModal").classList.add("open");
+    }
+
+    function closeAuthModal(e) {
+      if (e && e.target !== document.getElementById("authModal")) return;
+      document.getElementById("authModal").classList.remove("open");
+    }
+
+    function handleModalSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById("modalEmail").value;
+      const country = document.getElementById("modalCountry").value;
+      const c = AFRICAN_COUNTRIES.find(x => x.code === country);
+
+      currentUser = {
+        name: email.split("@")[0].replace(/[._]/g, " "),
+        email,
+        country: c ? c.name : "South Africa",
+        flag: c ? c.flag : "🇿🇦",
+        role: "Advocate / Practitioner"
+      };
+      localStorage.setItem("lulagazette-auth-user", JSON.stringify(currentUser));
+      updateUserUI();
+      closeAuthModal();
+    }
+
+    function demoLogin(name, code, role) {
+      const c = AFRICAN_COUNTRIES.find(x => x.code === code) || AFRICAN_COUNTRIES[0];
+      currentUser = {
+        name,
+        email: name.toLowerCase().replace(/[\s.]/g, "") + "@lawchambers.africa",
+        country: c.name,
+        flag: c.flag,
+        role
+      };
+      localStorage.setItem("lulagazette-auth-user", JSON.stringify(currentUser));
+      updateUserUI();
+      closeAuthModal();
+    }
+
+    function updateUserUI() {
+      const btn = document.getElementById("authBtn");
+      if (currentUser && btn) {
+        btn.textContent = `${currentUser.flag} ${currentUser.name.split(" ")[0]}`;
+        btn.style.borderColor = "var(--blue)";
+        btn.style.color = "var(--blue)";
+      }
+    }
+  </script>
+</body>
+</html>
