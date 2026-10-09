@@ -1,0 +1,72 @@
+Copyright (c) 2026 Lulamile Mkhungela
+
+All Rights Reserved.
+
+LulaGazette and this repository’s source code, design, documentation, and
+bundled educational materials are the property of Lulamile Mkhungela unless
+a third-party notice says otherwise.
+
+---------------------------------------------------------------------------
+PERMITTED (without a separate written licence)
+---------------------------------------------------------------------------
+
+You may:
+
+  • Clone or download this repository for personal evaluation, local demos,
+    and non-production learning on your own machines.
+  • Run the application locally (npm install / npm run dev / npm run build)
+    for those purposes.
+  • Fork privately to experiment, provided you do not publish the fork as a
+    competing public product under the LulaGazette name or branding.
+
+---------------------------------------------------------------------------
+NOT PERMITTED (without prior written permission from the copyright holder)
+---------------------------------------------------------------------------
+
+You may not:
+
+  • Use this software or the LulaGazette name/branding in production SaaS,
+    paid commercial offerings, or white-label deployments.
+  • Redistribute the source, builds, or packaged content as your own product.
+  • Remove copyright, attribution, or disclaimer notices.
+  • Scrape, bulk-copy, or republish the curated legal corpus from this repo
+    as a standalone commercial database.
+  • Suggest that LulaGazette or the author provides legal advice, legal
+    representation, or that the author is an admitted attorney or advocate.
+
+Contact for commercial licences, partnerships, or integrations:
+  mkhungela.l@gmail.com
+
+---------------------------------------------------------------------------
+THIRD-PARTY AND PUBLIC DOMAIN MATERIAL
+---------------------------------------------------------------------------
+
+• Open-source dependencies (Next.js, React, pdf.js / react-pdf, jsPDF,
+  Tailwind CSS, and others) remain under their own licences — see
+  package.json and each package’s licence file.
+• References to South African statutes, judgments, and public institutions
+  are for educational demonstration. Official texts remain with the
+  Government Printer, the courts, and other rightful publishers. Always
+  verify the current official version before relying on any extract.
+• Do not treat bundled PDFs or summaries as certified or complete law reports.
+
+---------------------------------------------------------------------------
+DISCLAIMER
+---------------------------------------------------------------------------
+
+THIS SOFTWARE AND CONTENT ARE PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT SHALL
+THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY
+ARISING FROM USE OF THE SOFTWARE OR THE EDUCATIONAL LEGAL MATERIALS.
+
+LulaGazette is not a law firm. Nothing in this repository creates an
+attorney–client relationship.
+
+---------------------------------------------------------------------------
+GOVERNING LAW
+---------------------------------------------------------------------------
+
+These terms are governed by the laws of the Republic of South Africa.
+Courts of Johannesburg (Gauteng) have non-exclusive jurisdiction, without
+prejudice to mandatory consumer protections where they apply.

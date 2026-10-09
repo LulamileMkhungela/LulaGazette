@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --lg-blue: #0c68be;
+  --lg-blue-bright: #0f80eb;
+  --lg-navy: #0b151f;
+  --lg-ink: #112130;
+  --lg-muted: #677480;
+  --lg-soft: #86929e;
+  --lg-line: #e5eef5;
+  --lg-line-2: #ebf0f5;
+  --lg-wash: #fafdff;
+  --lg-page: #f5f8fb;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  @apply bg-white text-[#112130] font-sans antialiased;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #b7c6d6 transparent;
+}
+
+::selection {
+  background: rgba(12, 104, 190, 0.18);
+}
+
+.prose-legal {
+  @apply whitespace-pre-wrap text-[15px] leading-7 text-[#1D2E40];
+}
+
+.prose-legal h2 {
+  @apply mb-3 mt-8 font-display text-xl text-[#0B151F];
+}
+
+/* Full-height search shell */
+.lg-search-shell {
+  min-height: calc(100dvh - 4.5rem);
+}
+
+.lg-filter-panel {
+  max-height: calc(100dvh - 6.25rem);
+}

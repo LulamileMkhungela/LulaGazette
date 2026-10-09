@@ -1,0 +1,166 @@
+{
+  "acts": {
+    "pages": 2,
+    "title": "Constitution of the Republic of South Africa, 1996"
+  },
+  "lra-66-1995": {
+    "pages": 2,
+    "title": "Labour Relations Act 66 of 1995"
+  },
+  "bcea-75-1997": {
+    "pages": 2,
+    "title": "Basic Conditions of Employment Act 75 of 1997"
+  },
+  "eea-55-1998": {
+    "pages": 2,
+    "title": "Employment Equity Act 55 of 1998"
+  },
+  "popa-4-2013": {
+    "pages": 2,
+    "title": "Protection of Personal Information Act 4 of 2013"
+  },
+  "paia-2-2000": {
+    "pages": 2,
+    "title": "Promotion of Access to Information Act 2 of 2000"
+  },
+  "cpa-68-2008": {
+    "pages": 2,
+    "title": "Consumer Protection Act 68 of 2008"
+  },
+  "companies-71-2008": {
+    "pages": 2,
+    "title": "Companies Act 71 of 2008"
+  },
+  "pie-19-1998": {
+    "pages": 2,
+    "title": "Prevention of Illegal Eviction from and Unlawful Occupation of Land Act 19 of 1998"
+  },
+  "nca-34-2005": {
+    "pages": 2,
+    "title": "National Credit Act 34 of 2005"
+  },
+  "criminal-procedure-51-1977": {
+    "pages": 2,
+    "title": "Criminal Procedure Act 51 of 1977"
+  },
+  "makwanyane-1995": {
+    "pages": 2,
+    "title": "S v Makwanyane and Another"
+  },
+  "grootboom-2000": {
+    "pages": 2,
+    "title": "Government of the Republic of South Africa v Grootboom"
+  },
+  "treatment-action-campaign-2002": {
+    "pages": 2,
+    "title": "Minister of Health v Treatment Action Campaign (No 2)"
+  },
+  "carmichele-2001": {
+    "pages": 2,
+    "title": "Carmichele v Minister of Safety and Security"
+  },
+  "blue-moonlight-2011": {
+    "pages": 2,
+    "title": "City of Johannesburg v Blue Moonlight Properties"
+  },
+  "national-coalition-1998": {
+    "pages": 2,
+    "title": "National Coalition for Gay and Lesbian Equality v Minister of Justice"
+  },
+  "sidumo-2007": {
+    "pages": 2,
+    "title": "Sidumo v Rustenburg Platinum Mines Ltd"
+  },
+  "form-n1": {
+    "pages": 2,
+    "title": "Form N1 — Notice of Motion (High Court)"
+  },
+  "form-summons-mc": {
+    "pages": 2,
+    "title": "Ordinary Summons — Magistrates' Court"
+  },
+  "form-ccma-7-11": {
+    "pages": 2,
+    "title": "CCMA Form 7.11 — Referring a Dispute"
+  },
+  "uniform-rules": {
+    "pages": 2,
+    "title": "Uniform Rules of Court (High Court) — Overview"
+  },
+  "const-court-rules": {
+    "pages": 2,
+    "title": "Rules of the Constitutional Court"
+  },
+  "magistrates-rules": {
+    "pages": 2,
+    "title": "Magistrates' Courts Rules — Overview"
+  },
+  "reg-lra-ccma": {
+    "pages": 2,
+    "title": "CCMA Rules and LRA Regulations"
+  },
+  "reg-popia-regulations": {
+    "pages": 2,
+    "title": "POPIA Regulations, 2018"
+  },
+  "reg-national-minimum-wage": {
+    "pages": 2,
+    "title": "National Minimum Wage annual adjustment notices"
+  },
+  "gauteng-liquor": {
+    "pages": 2,
+    "title": "Gauteng Liquor Act 2 of 2003"
+  },
+  "wc-liquor": {
+    "pages": 2,
+    "title": "Western Cape Liquor Act 4 of 2008"
+  },
+  "kzn-planning": {
+    "pages": 2,
+    "title": "KwaZulu-Natal Planning and Development Act 6 of 2008"
+  },
+  "gp-schools": {
+    "pages": 2,
+    "title": "Gauteng School Education Act 6 of 1995"
+  },
+  "nhi-20-2023": {
+    "pages": 2,
+    "title": "National Health Insurance Act 20 of 2023"
+  },
+  "expropriation-13-2024": {
+    "pages": 2,
+    "title": "Expropriation Act 13 of 2024"
+  },
+  "reg-popia-2025": {
+    "pages": 2,
+    "title": "Protection of Personal Information Regulations — 2025 amendments"
+  },
+  "sars-crypto-note": {
+    "pages": 2,
+    "title": "SARS treatment of crypto assets (CGT overview)"
+  },
+  "rental-housing-50-1999": {
+    "pages": 2,
+    "title": "Rental Housing Act 50 of 1999"
+  },
+  "esta-62-1997": {
+    "pages": 1,
+    "title": "Extension of Security of Tenure Act 62 of 1997"
+  },
+  "legal-practice-28-2014": {
+    "pages": 1,
+    "title": "Legal Practice Act 28 of 2014"
+  },
+  "superior-courts-10-2013": {
+    "pages": 1,
+    "title": "Superior Courts Act 10 of 2013"
+  },
+  "pe-municipality-2004": {
+    "pages": 1,
+    "title": "Port Elizabeth Municipality v Various Occupiers"
+  },
+  "olivia-road-2008": {
+    "pages": 1,
+    "title": "Occupiers of 51 Olivia Road v City of Johannesburg"
+  }
+}
